@@ -13,7 +13,7 @@ Travel Diary Application
 
 <br><br><br>
 ### Skills
-
+<hr>
 
 <br><br><br>
 ### Using packages

@@ -15,8 +15,10 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
 
+
+class _MyAppState extends State<MyApp> {
+  // 테마 모드 light or dark
   ThemeMode _themeMode = ThemeMode.system; // system은 dark, light 둘다 사용
 
   _changeThemeMode(ThemeMode themeMode) {
@@ -56,7 +58,7 @@ class _MyAppState extends State<MyApp> {
       ),
       // function도 보낼 수 있다.
       
-      home: Home(),
+      home: const Home(),
     );
   }
 }

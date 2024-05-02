@@ -26,7 +26,7 @@ class Home extends StatelessWidget {
               child: const Text("소리님")
             ),
             ElevatedButton(
-              onPressed: () => Get.to(const Login()), 
+              onPressed: () => Get.to(Login()), 
               child: const Text("woody")
             ),
           ],

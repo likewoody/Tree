@@ -39,13 +39,20 @@ dependencies:
   cupertino_icons: ^1.0.6
   path: ^1.9.0
 
-  # firebase
+  # Firebase
   firebase_core: ^2.28.0
   cloud_firestore: ^4.16.0
   firebase_analytics: ^10.10.0
   firebase_database: ^10.5.0
   firebase_storage: ^11.7.0
+
+  # Google
+  google_sign_in: ^6.2.1
+
+  # Image Picker
   image_picker: ^1.0.7
+
+  # Get
   get: ^4.6.6
 
   # GPS
@@ -77,8 +84,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -54,6 +54,7 @@ dependencies:
 
   # Get
   get: ^4.6.6
+  get_storage: ^2.1.1
 
   # GPS
   geocoding: ^3.0.0

@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 
 class CheckValidate{
-  String validateEmail(FocusNode focusNode, String value){
-    if(value.isEmpty){
-      focusNode.requestFocus();
+
+  // GetX 사용하기 위한 모델
+  String emailHelper;
+  String pwHelper;
+
+  // GetX 사용하기 위한 모델
+  CheckValidate({
+    this.emailHelper = "",
+    this.pwHelper = ""
+  });
+
+  String validateEmail(String value){
+    if (value.isEmpty) {
       return '이메일을 입력하세요.';
-    }else {
-      Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-      RegExp regExp = RegExp(pattern.toString());
-      if(!regExp.hasMatch(value)){
-        focusNode.requestFocus();	//포커스를 해당 textformfield에 맞춘다.
-        return '잘못된 이메일 형식입니다.';
-      }else{
-        return '';
-      }
     }
+
+    final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegExp.hasMatch(value)) {
+      return '잘못된 이메일 형식입니다.';
+    }return '';
   }
 
   String validatePassword(FocusNode focusNode, String value){

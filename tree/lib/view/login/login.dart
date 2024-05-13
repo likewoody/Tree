@@ -216,7 +216,7 @@ class Login extends StatelessWidget {
 
                     print("succesfully in");
                   }else{
-                    print("틀렷다~~수정해라");
+                    print("failed...");
                   }
                 },
                 child: Container(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:td_app/model/login/checkValidate.dart';
+import 'package:td_app/view/login/register.dart';
 import 'package:td_app/view/start/start.dart';
 
 class Login extends StatelessWidget {
@@ -162,7 +163,7 @@ class Login extends StatelessWidget {
             // PW Textfield
             SizedBox(
               width: 280,
-              height: 120,
+              height: 50,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(15, 10,15,0),
                 // 이게 없으면 밑에 표시가 나오지 않음
@@ -190,8 +191,15 @@ class Login extends StatelessWidget {
               ),
             ),
             // PW Textfield
-              
-              
+            
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,0,0,30),
+              child: TextButton(
+                
+                onPressed: () => Get.to(const Register()), 
+                child: const Text("회원가입")
+              ),
+            ),
 
 
             // Login Button

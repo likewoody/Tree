@@ -4,6 +4,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:td_app/model/login/checkValidate.dart';
 import 'package:td_app/view/login/register.dart';
 import 'package:td_app/view/start/start.dart';
+import 'package:td_app/vm/database_handler.dart';
+import 'package:td_app/vm/vm_get_login.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -13,7 +15,7 @@ class Login extends StatelessWidget {
   final TextEditingController pwController = TextEditingController();
   // GetX Controller
   // final controller = Get.put(VMGetXLogin());
-
+  final DatabaseHandler handler = DatabaseHandler();
   // focusing pw
   final FocusNode _pwFocus = FocusNode();
   // focusing pw
@@ -26,35 +28,32 @@ class Login extends StatelessWidget {
   // GetStorage
   final box = GetStorage();
 
-  // Storage로 보낼 정보
-  var willSendDatas = {};
 
-
-
-
-  checkEmailPassword(snapshot) {
-    // 보낼 데이터 초기화
-    willSendDatas = {};
-
-
-    final documents = snapshot.data!.docs;
-    // Email & Password Check
-    documents.forEach((data) { 
-      if (emailController.text == data['email'] && pwController.text == data['password']) {
-        checkEmailPw = true;
-        // 보낼 데이터 맵으로 만듦
-        Map<String, String> map ={
-          "nickname":data['nickname'],
-          "id":data.id
-        };
-        // 맵으로 보내기
-        willSendDatas.addAll(map);
-      } else{
-        checkEmailPw = false;
-      }
-                  
-    });
+  // ---- Functions ----
+  loginAlert(VMGetXLogin controller){
+    if (controller.checkRe) {
+      Get.to(const Start());
+      Map<String, String> map = {
+        'id': controller.id.toString(),
+        'email':controller.email,
+      };
+      // 유저 정보 보내는 box
+      box.write("userInfo", map);
+    }else{
+      Get.defaultDialog(
+        title: "경고",
+        middleText: "정확하지 않은 아이디 비밀번호 입니다.",
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(), 
+            child: const Text("확인")
+          ),
+        ]
+      );
+    }
+    
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,24 +67,6 @@ class Login extends StatelessWidget {
       ),
     );
   }
-
-
-
-
-
-  // // ---- GetBuilder ----
-  // Widget bodyGetBuilder(){
-  //   return GetBuilder<VMGetXLogin>(
-  //     builder: (controller) {
-  //       return bodyView();
-  //     },
-  //   );
-  // }
-
-
-
-
-
 
   // Body View
   Widget bodyBuilder(){
@@ -131,7 +112,7 @@ class Login extends StatelessWidget {
             // Email Textfield
             SizedBox(
               width: 280,
-              height: 60,
+              height: 80,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(15,0,15,0),
                 // 이게 없으면 밑에 표시가 나오지 않음
@@ -163,7 +144,7 @@ class Login extends StatelessWidget {
             // PW Textfield
             SizedBox(
               width: 280,
-              height: 50,
+              height: 80,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(15, 10,15,0),
                 // 이게 없으면 밑에 표시가 나오지 않음
@@ -202,106 +183,108 @@ class Login extends StatelessWidget {
             ),
 
 
+            
             // Login Button
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: InkWell(
-                onTap: () async{
-                  // await authService.signInWithGoogle();
-                  String test;
-                  
-                  if (checkEmailPw) {
-                    await box.write("infoBox", willSendDatas);
-                    Get.to(const Start());
-
-                    print("succesfully in");
-                  }else{
-                    print("failed...");
-                  }
-                },
-                child: Container(
-                  color: const Color.fromRGBO(3, 172, 19, 1),
-                  width: 200,
-                  height: 50,
-                  child: const Padding(
-                    padding: EdgeInsets.fromLTRB(10,0,0,0),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(0,12,10,12),
-                      child: Text(
-                        "로그인",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            // Login Button
-              
-            // Google InkWell
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: InkWell(
-                onTap: () async {
-                  // await authService.signInWithGoogle();
-                  print("clicked Google Logo");
-                },
-                child: Container(
-                  color: Colors.grey[200],
-                  width: 200,
-                  height: 50,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30,0,0,0),
-                        child: Image.asset(
-                          "images/googleLogo.png",
-                          height: 25,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                  
-                      const Padding(
+            // 이메일 비밀번호 확인을 위해 VM에서 Login Butotn만 관리
+            GetBuilder<VMGetXLogin>(
+              init: VMGetXLogin(),
+              builder: (controller) {
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: InkWell(
+                    onTap: () async{
+                      controller.email = emailController.text;
+                      controller.password = pwController.text;
+                      await controller.checkEmailPassword();
+                      // login Alert 성공 or 실패
+                      loginAlert(controller);
+                    },
+                    child: Container(
+                      color: const Color.fromRGBO(3, 172, 19, 1),
+                      width: 200,
+                      height: 50,
+                      child: const Padding(
                         padding: EdgeInsets.fromLTRB(10,0,0,0),
-                        child: Text(
-                          "구글 로그인",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 20
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(0,12,10,12),
+                          child: Text(
+                            "로그인",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-            // Google InkWell
-              
-            // Naver InkWell
-            InkWell(
-              onTap: () async {
-                // await authService.signInWithGoogle();
-                print("clicked Naver Logo");
+                );
               },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
               
-                  Image.asset(
-                    "images/naverLogo.png",
-                    width: 200,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  ),
-                ],
-              ),
             ),
-            // Naver InkWell
+            // Login Button
+              
+            // // Google InkWell
+            // Padding(
+            //   padding: const EdgeInsets.all(10.0),
+            //   child: InkWell(
+            //     onTap: () async {
+            //       // await authService.signInWithGoogle();
+            //       print("clicked Google Logo");
+            //     },
+            //     child: Container(
+            //       color: Colors.grey[200],
+            //       width: 200,
+            //       height: 50,
+            //       child: Row(
+            //         children: [
+            //           Padding(
+            //             padding: const EdgeInsets.fromLTRB(30,0,0,0),
+            //             child: Image.asset(
+            //               "images/googleLogo.png",
+            //               height: 25,
+            //               fit: BoxFit.fill,
+            //             ),
+            //           ),
+                  
+            //           const Padding(
+            //             padding: EdgeInsets.fromLTRB(10,0,0,0),
+            //             child: Text(
+            //               "구글 로그인",
+            //               style: TextStyle(
+            //                 color: Colors.black54,
+            //                 fontSize: 20
+            //               ),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // // Google InkWell
+              
+            // // Naver InkWell
+            // InkWell(
+            //   onTap: () async {
+            //     // await authService.signInWithGoogle();
+            //     print("clicked Naver Logo");
+            //   },
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //     children: [
+              
+            //       Image.asset(
+            //         "images/naverLogo.png",
+            //         width: 200,
+            //         height: 50,
+            //         fit: BoxFit.cover,
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // // Naver InkWell
               
               
           ],

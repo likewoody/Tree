@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:td_app/model/login/checkValidate.dart';
+import 'package:td_app/vm/vm_get_login.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -92,6 +93,38 @@ class _RegisterState extends State<Register> {
   }
 
 
+  alertSignUp(int result){
+    // if (testId == emailCon.text){
+    if (result > 0){
+      Get.defaultDialog(
+        title: "알림",
+        middleText: "회원가입이 완료되었습니다.",
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back();
+              Get.back();
+            }, 
+            child: const Text("확인")
+          ),
+        ]
+      );
+    }else {
+      Get.defaultDialog(
+        title: "경고",
+        middleText: "회원 가입 실패 하였습니다.",
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back();
+            }, 
+            child: const Text("확인")
+          ),
+        ]
+      );
+    }
+  }
+
 
 
 
@@ -124,7 +157,7 @@ class _RegisterState extends State<Register> {
                       // Change가 발생하면 그리고 정규성이 통과됬을 때 alertCheck를 true로 바꾸고 alert 실행
                       onChanged: (value) {
                         if (CheckValidate().validateEmail(value) != null) {
-                          print("check onfieldSubmitted");
+                          // print("check onfieldSubmitted");
                           alertCheck = true;
                         }
                       },
@@ -170,7 +203,7 @@ class _RegisterState extends State<Register> {
 
   Widget secondTextField(){
     setState(() {});
-    print("get in secondTextField $showPasswordTextField");
+    // print("get in secondTextField $showPasswordTextField");
     return Center(
       child: Column(children: [
         // 비밀번호
@@ -252,34 +285,42 @@ class _RegisterState extends State<Register> {
           width: 0,
           height: 40,
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0,0,0,33),
-          child: ElevatedButton(
-            onPressed: () {
-              // 디비 연결시 디비에 저장하는 회원가입 func 실행
-              // 디비 연결시 디비에 저장하는 회원가입 func 실행
-              // 디비 연결시 디비에 저장하는 회원가입 func 실행
-              // 디비 연결시 디비에 저장하는 회원가입 func 실행
-              // 디비 연결시 디비에 저장하는 회원가입 func 실행
-              // 디비 연결시 디비에 저장하는 회원가입 func 실행
-              
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromRGBO(60, 172, 19, 1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
+        GetBuilder<VMGetXLogin>(
+          init: VMGetXLogin(),
+          builder: (controller) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(0,0,0,33),
+              child: ElevatedButton(
+                onPressed: () async{
+
+                  controller.email = emailCon.text;
+                  controller.password = passwordCon.text;
+                  
+                  // 회원가입 SQLite 실행
+                  int result = await controller.userResigeter();
+                  // 로그인 성공시 alert
+                  print(result);
+                  alertSignUp(result);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromRGBO(60, 172, 19, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                
+                child: const Text(
+                  "회원가입",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                    // backgroundColor: Colors.grey
+                  ),
+                ),
               ),
-            ),
-            
-            child: const Text(
-              "회원가입",
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.white,
-                // backgroundColor: Colors.grey
-              ),
-            ),
-          ),
+            );
+          },
+          
         ),
       ],),
     

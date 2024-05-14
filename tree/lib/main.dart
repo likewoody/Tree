@@ -17,6 +17,7 @@ class MyApp extends StatefulWidget {
 
 
 class _MyAppState extends State<MyApp> {
+
   // 테마 모드 light or dark
   ThemeMode _themeMode = ThemeMode.system; // system은 dark, light 둘다 사용
 

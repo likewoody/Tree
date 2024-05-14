@@ -1,40 +1,31 @@
 import 'package:get/get.dart';
+import 'package:td_app/model/login/user.dart';
+import 'package:td_app/vm/database_handler.dart';
 
 
 class VMGetXLogin extends GetxController{
   
-  String emailHelper = "";
+  String email = "";
+  String password = "";
+  int id = 0;
+  bool checkRe = false;
+  DatabaseHandler handler = DatabaseHandler();
 
-
-  // String get emailHelper => _emailHelper;
-
-
-  // set emailHelper(String value) {
-  //   _emailHelper = value;
-  //   print("test");
-  //   update(); // 값 변경 시 구독자에게 알림
-  // }    
-
-
-  test(){
+  Future<int> userResigeter() async{
+    User user = User(email: email, password: password);
+    int result = await handler.insertUser(user);
+    return result;
 
   }
 
-
-  // test용 obs
-  // final loginCheckModel = CheckValidate().obs;
-  // test용 obs
-
-
-
-  // test용 obs
-  // void keepWatchingEmail(){
-  //   loginCheckModel.update((val) {
-  //     val?.emailHelper = emailHelper;
-  //   });
-
-  //   print("email helper check $emailHelper");
-  // }
-  // test용 obs
+  checkEmailPassword() async{
+    User user = User(email: email, password: password);
+    final result = await handler.queryUser(user);
+    
+    result.forEach((data) {
+      checkRe = data.email == email && data.password == password ? true : false;
+      id = data.email == email && data.password == password ? data.id! : 0;
+    });
+  }
 
 }

@@ -10,6 +10,7 @@ class FindPassword extends StatelessWidget {
 
   final TextEditingController emailCon = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
+  bool _checkEmail = false;
 
   // SQLite를 통해서 where문으로 입력한 이메일을 찾는데
   // 자꾸 찾는게 잘 안된다. 되긴 했지만 반응이 조금씩 느리다.
@@ -17,19 +18,11 @@ class FindPassword extends StatelessWidget {
 
 
   // ---- Alert ----
-  alertEmail(controller){
-    if (controller.checkEmailReturn == "") {
-      Get.defaultDialog(
-        title: "경고",
-        middleText: "이메일을 확인 해주세요.",
-        actions: [
-          TextButton(
-            onPressed: () {Get.back();}, 
-            child: const Text("확인")
-          ),
-        ]
-      );
-    }else {
+  alertEmail(controller) async{
+    controller.email = emailCon.text;
+    await controller.checkEmailForRegister();
+
+    if (controller.checkEmailReturn == emailCon.text) {
       Get.defaultDialog(
         title: "알림",
         middleText: "이메일이 확인 되었습니다.",
@@ -43,6 +36,17 @@ class FindPassword extends StatelessWidget {
               Get.back();
               Get.to(ChangePw());
             }, 
+            child: const Text("확인")
+          ),
+        ]
+      );
+    }else {
+      Get.defaultDialog(
+        title: "경고",
+        middleText: "이메일을 확인 해주세요.",
+        actions: [
+          TextButton(
+            onPressed: () {Get.back();}, 
             child: const Text("확인")
           ),
         ]
@@ -85,9 +89,8 @@ class FindPassword extends StatelessWidget {
                           ),validator: (value) => CheckValidate().validateEmail(value ?? ""),
                           // Change가 발생하면 그리고 정규성이 통과됬을 때 alertCheck를 true로 바꾸고 alert 실행
                           onChanged: (value) async {
-                            if (CheckValidate().validateEmail(value) != null) {
-                              controller.email = emailCon.text;
-                              await controller.checkEmailForRegister();
+                            if (CheckValidate().validateEmail(value) == "") {
+                              _checkEmail = true;
                               // print("check onfieldSubmitted");
                             }
                           },
@@ -104,8 +107,7 @@ class FindPassword extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(0,0,0,33),
                 child: ElevatedButton(
                   onPressed: () {
-                    // 정규성이 통과 되었을 때만 alert을 통해 중복확인 체크
-                    alertEmail(controller);
+                    _checkEmail ? alertEmail(controller) : null;
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(60, 172, 19, 1),

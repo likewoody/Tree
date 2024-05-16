@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:td_app/model/login/checkValidate.dart';
 import 'package:td_app/view/login/findPw.dart';
 import 'package:td_app/view/login/register.dart';
-import 'package:td_app/view/start/start.dart';
+import 'package:td_app/view/common/tabbar.dart';
 import 'package:td_app/vm/database_handler.dart';
 import 'package:td_app/vm/vm_get_login.dart';
 
@@ -33,7 +33,8 @@ class Login extends StatelessWidget {
   // ---- Functions ----
   loginAlert(VMGetXLogin controller){
     if (controller.checkRe) {
-      Get.to(const Start());
+      // Get.ofAll 해야지 뒤로가기 버튼 안생김
+      Get.offAll(const CommonTabbar());
       Map<String, String> map = {
         'id': controller.id.toString(),
         'email':controller.email,

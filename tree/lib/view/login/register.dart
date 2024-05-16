@@ -23,10 +23,10 @@ class _RegisterState extends State<Register> {
   late FocusNode _pwFocus2;
   // 1번째 TextField가 정규성, 중복이 끝나면 true로 보여주기 위함
   late bool showPasswordTextField;
-  // test용 아이디 만들기
-  late String testId;
-  // 정규성이 통과됬을 때 alert 띄우기 위한 변수
-  late bool alertCheck;
+  // email 인증이 끝나면 중복확인 버튼 비활성화
+  late bool _isEmailDuplicated;
+  // 상태관리용
+  late VMGetXLogin controller;
 
 
   @override
@@ -42,26 +42,16 @@ class _RegisterState extends State<Register> {
     _pwFocus2 = FocusNode();
     showPasswordTextField = false;
     // textFieldList = [firstTextField()];
-
-    alertCheck = false;
-    
-    // 테스트용 아디
-    testId = "test@naver.com";
+    controller = VMGetXLogin();
+    _isEmailDuplicated = false;
   }
-
-  // DB 연결시 DB에 있는 이메일과 비교 중복확인 필요
-  // DB 연결시 DB에 있는 이메일과 비교 중복확인 필요
-  // DB 연결시 DB에 있는 이메일과 비교 중복확인 필요
-  // DB 연결시 DB에 있는 이메일과 비교 중복확인 필요
-  // DB 연결시 DB에 있는 이메일과 비교 중복확인 필요
-  // DB 연결시 DB에 있는 이메일과 비교 중복확인 필요
-  // DB 연결시 DB에 있는 이메일과 비교 중복확인 필요
-
-
 
   // ---- Functions ----
   alertEmailCheck(){
-    if (testId == emailCon.text){
+    // controller.checkEmailForRegister();
+    // print("checkEmailReturn");
+    // print("${controller.checkEmailReturn} test teststs");
+    if (controller.checkEmailReturn == emailCon.text){
       Get.defaultDialog(
         title: "경고",
         middleText: "중복된 이메일입니다.",
@@ -75,10 +65,11 @@ class _RegisterState extends State<Register> {
     }else {
       Get.defaultDialog(
         title: "알림",
-        middleText: "사용 가능한 Email입니다.",
+        middleText: "사용 가능한 이메일입니다.",
         actions: [
           TextButton(
             onPressed: () {
+              _isEmailDuplicated = true;
               showPasswordTextField = true;
               // body View에서만 이걸 보여줘도 되지 않는가?
               // 근데 alert창 이후에 바로 화면에 보여주려면 여기서 있어야 바로 화면에 보여진다.
@@ -133,6 +124,10 @@ class _RegisterState extends State<Register> {
     return Column(
       children: [
         const SizedBox(height: 100),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 275, 5),
+          child: Text("이메일"),
+        ),
         Row(
           children: [
             SizedBox(
@@ -155,10 +150,11 @@ class _RegisterState extends State<Register> {
                         contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
                       ),validator: (value) => CheckValidate().validateEmail(value ?? ""),
                       // Change가 발생하면 그리고 정규성이 통과됬을 때 alertCheck를 true로 바꾸고 alert 실행
-                      onChanged: (value) {
+                      onChanged: (value) async{
                         if (CheckValidate().validateEmail(value) != null) {
                           // print("check onfieldSubmitted");
-                          alertCheck = true;
+                          controller.email = emailCon.text;
+                          await controller.checkEmailForRegister();
                         }
                       },
                     ),
@@ -171,11 +167,9 @@ class _RegisterState extends State<Register> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0,0,0,33),
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: _isEmailDuplicated ? null : () {
                       // 정규성이 통과 되었을 때만 alert을 통해 중복확인 체크
-                      if (alertCheck){
-                        alertEmailCheck();
-                      }
+                      alertEmailCheck();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromRGBO(60, 172, 19, 1),
@@ -183,6 +177,7 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
+                    
                     
                     child: const Text(
                       "중복확인",
@@ -206,6 +201,10 @@ class _RegisterState extends State<Register> {
     // print("get in secondTextField $showPasswordTextField");
     return Center(
       child: Column(children: [
+        const Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 265, 5),
+          child: Text("비밀번호"),
+        ),
         // 비밀번호
         Row(
           children: [
@@ -243,7 +242,10 @@ class _RegisterState extends State<Register> {
         const SizedBox(
           height: 25,
         ),
-
+        const Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 235, 5),
+          child: Text("비밀번호 확인"),
+        ),
         // 비밀번호 확인
         Row(
           children: [
@@ -285,42 +287,36 @@ class _RegisterState extends State<Register> {
           width: 0,
           height: 40,
         ),
-        GetBuilder<VMGetXLogin>(
-          init: VMGetXLogin(),
-          builder: (controller) {
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(0,0,0,33),
-              child: ElevatedButton(
-                onPressed: () async{
-
-                  controller.email = emailCon.text;
-                  controller.password = passwordCon.text;
-                  
-                  // 회원가입 SQLite 실행
-                  int result = await controller.userResigeter();
-                  // 로그인 성공시 alert
-                  print(result);
-                  alertSignUp(result);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(60, 172, 19, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                
-                child: const Text(
-                  "회원가입",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
-                    // backgroundColor: Colors.grey
-                  ),
-                ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0,0,0,33),
+          child: ElevatedButton(
+            onPressed: () async{
+              
+              controller.email = emailCon.text;
+              controller.password = passwordCon.text;
+              
+              // 회원가입 SQLite 실행
+              int result = await controller.userResigeter();
+              // 로그인 성공시 alert
+              print(result);
+              alertSignUp(result);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromRGBO(60, 172, 19, 1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
               ),
-            );
-          },
-          
+            ),
+            
+            child: const Text(
+              "회원가입",
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
+                // backgroundColor: Colors.grey
+              ),
+            ),
+          ),
         ),
       ],),
     

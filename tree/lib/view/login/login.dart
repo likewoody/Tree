@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:td_app/model/login/checkValidate.dart';
+import 'package:td_app/view/login/findPw.dart';
 import 'package:td_app/view/login/register.dart';
 import 'package:td_app/view/start/start.dart';
 import 'package:td_app/vm/database_handler.dart';
@@ -173,17 +174,26 @@ class Login extends StatelessWidget {
             ),
             // PW Textfield
             
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,0,0,30),
-              child: TextButton(
-                
-                onPressed: () => Get.to(const Register()), 
-                child: const Text("회원가입")
-              ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0,0,0,30),
+                  child: TextButton(
+                    onPressed: () => Get.to(const Register()), 
+                    child: const Text("회원가입")
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0,0,0,30),
+                  child: TextButton(
+                    onPressed: () => Get.to(FindPassword()), 
+                    child: const Text("비밀번호 찾기")
+                  ),
+                ),
+              ],
             ),
-
-
-            
             // Login Button
             // 이메일 비밀번호 확인을 위해 VM에서 Login Butotn만 관리
             GetBuilder<VMGetXLogin>(
@@ -195,7 +205,7 @@ class Login extends StatelessWidget {
                     onTap: () async{
                       controller.email = emailController.text;
                       controller.password = pwController.text;
-                      await controller.checkEmailPassword();
+                      await controller.checkEmailPasswordForLogin();
                       // login Alert 성공 or 실패
                       loginAlert(controller);
                     },

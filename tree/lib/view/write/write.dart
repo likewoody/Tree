@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Write extends StatefulWidget {
   const Write({super.key});
@@ -13,9 +14,9 @@ class _WriteState extends State<Write> {
   late TextEditingController day2Controller;
   late TextEditingController travelMateController;
   late TextEditingController weatherController;
-  late List<Widget> travelPlaceList;
-  late List<Widget> travelDayList;
-  int dayCnt = 1;
+  late TextEditingController writeController;
+  late List<String> writeList;
+  late int dayCnt;
 
   @override
   void initState() {
@@ -25,8 +26,36 @@ class _WriteState extends State<Write> {
     day2Controller = TextEditingController();
     travelMateController = TextEditingController();
     weatherController = TextEditingController();
-    travelPlaceList = [];
-    travelDayList = [];
+    writeController = TextEditingController();
+    dayCnt = 0;
+    writeList = [""];
+  }
+
+  Widget dayWidget() {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Container(
+        width: 300,
+        color: Colors.amber,
+        child: Column(
+          children: [
+            Text("Day ${dayCnt + 1}"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 200,
+                  child: TextField(
+                    controller: writeController,
+                    maxLines: 10,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -98,50 +127,41 @@ class _WriteState extends State<Write> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Container(
-                  width: 300,
-                  color: Colors.amber,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text("Day $dayCnt"),
-                          IconButton(
-                              onPressed: () {
-                                addPlaceWidget();
-                              },
-                              icon: Icon(Icons.add))
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("장소 : "),
-                          Container(
-                            width: 200,
-                            child: TextField(),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: travelPlaceList,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Column(
-                children: travelDayList,
+              dayWidget(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        if (dayCnt > 0) {
+                          saveCurrentDayText();
+                          dayCnt--;
+                          writeController.text = writeList[dayCnt];
+                        } else {
+                          Get.defaultDialog(title: "여행 첫날입니다.");
+                        }
+                        setState(() {});
+                      },
+                      child: Icon(Icons.remove)),
+                  ElevatedButton(
+                      onPressed: () {
+                        saveCurrentDayText();
+                        dayCnt++;
+                        if (writeList.length <= dayCnt) {
+                          writeList.add("");
+                        }
+                        writeController.text = writeList[dayCnt];
+                        setState(() {});
+                      },
+                      child: Icon(Icons.add)),
+                ],
               ),
               ElevatedButton(
-                  onPressed: () {
-                    addDayWidget();
-                  },
-                  child: Icon(Icons.add)),
-              ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  saveCurrentDayText();
+                  print(writeList);
+                  Get.back();
+                },
                 child: Text("업로드 하기"),
               )
             ],
@@ -151,60 +171,11 @@ class _WriteState extends State<Write> {
     );
   }
 
-  addPlaceWidget() {
-    travelPlaceList.add(
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("장소 : "),
-          Container(
-            width: 200,
-            child: TextField(),
-          ),
-        ],
-      ),
-    );
-    setState(() {});
-  }
-
-  addDayWidget() {
-    travelPlaceList = [];
-    travelDayList.add(
-      Padding(
-        padding: const EdgeInsets.all(10),
-        child: Container(
-          width: 300,
-          color: Colors.amber,
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Text("Day ${dayCnt}"),
-                  IconButton(
-                      onPressed: () {
-                        addPlaceWidget();
-                      },
-                      icon: Icon(Icons.add))
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("장소 : "),
-                  Container(
-                    width: 200,
-                    child: TextField(),
-                  ),
-                ],
-              ),
-              Column(
-                children: travelPlaceList,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-    setState(() {});
+  saveCurrentDayText() {
+    if (writeList.length > dayCnt) {
+      writeList[dayCnt] = writeController.text;
+    } else {
+      writeList.add(writeController.text);
+    }
   }
 }

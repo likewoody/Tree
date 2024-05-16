@@ -34,13 +34,13 @@ class VMGetXLogin extends GetxController{
     User user = User(email: email, password: password);
     result = await handler.queryFindEmail(user);
     try {
-      print("${result[0]["email"]}   result[0]['email']");
+      // print("${result[0]["email"]}   result[0]['email']");
       // print(email);
       checkEmailReturn = result[0]["email"] == email ? result[0]["email"] : "";
     } catch (e){
       e.printError();
     }
-    print("check EmailFor Register $checkEmailReturn");
+    // print("check EmailFor Register $checkEmailReturn");
     // print("${result[0]["email"]}");
     // print("${result[0]["email"]} Futre check Email FOr register");
     // print("return value $checkEmailReturn");

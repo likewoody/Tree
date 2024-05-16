@@ -28,6 +28,16 @@ class DatabaseHandler{
     return queryResult.map((e) => User.fromMap(e)).toList();
   }
 
+  // 비밀번호 찾기에서 사용할 email 확인
+  Future<List<Map<String, Object?>>> queryFindEmail(User user) async{
+    final Database db = await initializeDB(); 
+    final result = await db.rawQuery(
+        'select email from user where email=?',
+        [user.email]
+      );
+    return result;
+  }
+
   Future<int> insertUser(User user) async{
     int result = 0;
     final Database db = await initializeDB();
@@ -39,12 +49,21 @@ class DatabaseHandler{
     return result;
   }
 
-  Future<void> updateUser(User user) async{
+  // Future<void> updateUser(User user) async{
+  //   final Database db = await initializeDB();
+  //   await db.rawUpdate(
+  //     'update user set email=?, password=? where id = ?',
+  //     // ?에 값 넣기
+  //     [user.email, user.password, user.id]
+  //   );
+  // }
+
+  Future<void> updatePassword(User user) async{
     final Database db = await initializeDB();
     await db.rawUpdate(
-      'update user set email=?, password=? where id = ?',
+      'update user set password=? where email = ?',
       // ?에 값 넣기
-      [user.email, user.password, user.id]
+      [user.password, user.email]
     );
   }
 

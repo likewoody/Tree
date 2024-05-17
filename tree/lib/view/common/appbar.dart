@@ -5,17 +5,20 @@ class CommonAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      toolbarHeight: 80,
-      title: Column(
-        children: [
-          Image.asset(
-            "images/tree.png",
-            width: 40,
-            height: 40,
-            fit: BoxFit.fill,
-          )
-        ],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: AppBar(
+        toolbarHeight: 80,
+        title: Column(
+          children: [
+            Image.asset(
+              "images/tree.png",
+              width: 40,
+              height: 40,
+              fit: BoxFit.fill,
+            )
+          ],
+        ),
       ),
     );
   }

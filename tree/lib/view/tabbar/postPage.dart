@@ -8,16 +8,19 @@ class PostPage extends StatelessWidget {
   PostPage({super.key});
 
   // 데이터만 SQLite를 통해서 받아오면 된다.
-  List<Map> testList = [{"img":"images/dog.png", "content":"대구 여행", "date":"2022-11-12"},
+  final List<Map> testList = [{"img":"images/dog.png", "content":"대구 여행", "date":"2022-11-12"},
                       {"img":"images/cat.png", "content":"부산 여행", "date":"2022-11-12"},
                       {"img":"images/cow.png", "content":"울산 여행", "date":"2022-11-12"},
                       {"img":"images/bee.png", "content":"경주 여행", "date":"2022-11-12"},
                       {"img":"images/tree.png", "content":"강원 여행", "date":"2022-11-12"}
   ];
-
+  // final box = GetStorage();
 
   // ---- View ----
   Widget bodyView(){
+    // print(box.read('userInfo'));
+    // print(box.read('email'));
+    // print(box.read('password'));
     return InkWell(
       onTap: () => Get.to(const Detail()),
       child: ListView.builder(
@@ -64,7 +67,7 @@ class PostPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(120), 
+        preferredSize: Size.fromHeight(80), 
         child: CommonAppbar()
       ),
       body: bodyView(),

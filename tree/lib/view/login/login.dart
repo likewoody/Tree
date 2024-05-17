@@ -32,12 +32,16 @@ class Login extends StatelessWidget {
 
   // ---- Functions ----
   loginAlert(VMGetXLogin controller){
+    // print(controller.id);
+    // print(controller.password);
+    // print(controller.email);
     if (controller.checkRe) {
       // Get.ofAll 해야지 뒤로가기 버튼 안생김
       Get.offAll(const CommonTabbar());
       Map<String, String> map = {
         'id': controller.id.toString(),
         'email':controller.email,
+        'password':controller.password
       };
       // 유저 정보 보내는 box
       box.write("userInfo", map);
@@ -52,22 +56,7 @@ class Login extends StatelessWidget {
           ),
         ]
       );
-    }
-    
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("login page test!!!!"),
-        ),
-        body: bodyBuilder()
-      ),
-    );
+    } 
   }
 
   // Body View
@@ -300,6 +289,21 @@ class Login extends StatelessWidget {
               
           ],
         )
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    emailController.text = "123@12.34";
+    pwController.text = "Qwer1234%";
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("login page test!!!!"),
+        ),
+        body: bodyBuilder()
       ),
     );
   }

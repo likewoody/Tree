@@ -36,7 +36,7 @@ class _CommonTabbarState extends State<CommonTabbar> with SingleTickerProviderSt
         controller: tabController,
         children: [
           PostPage(),
-          const Setting()
+          Setting()
         ]
       ),
 

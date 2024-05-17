@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:td_app/view/tabbar/historyPage.dart';
+import 'package:td_app/view/tabbar/postPage.dart';
 import 'package:td_app/view/tabbar/settingPage.dart';
 
 class CommonTabbar extends StatefulWidget {
@@ -34,9 +34,9 @@ class _CommonTabbarState extends State<CommonTabbar> with SingleTickerProviderSt
       // ),
       body: TabBarView(
         controller: tabController,
-        children: const [
-          History(),
-          Setting()
+        children: [
+          PostPage(),
+          const Setting()
         ]
       ),
 
@@ -46,7 +46,7 @@ class _CommonTabbarState extends State<CommonTabbar> with SingleTickerProviderSt
         child: TabBar(
           controller: tabController,
           labelColor: Colors.amber,
-          indicatorColor: Colors.red,
+          indicatorColor: Colors.transparent,
           indicatorWeight: 5,
           tabs: const [
             Tab(  // 1번째 탭에 대한 정보

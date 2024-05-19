@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:td_app/view/login/login.dart';
-import 'package:td_app/view/start/start.dart';
 import 'package:td_app/view/write/write.dart';
 
 class Home extends StatelessWidget {
@@ -18,10 +17,6 @@ class Home extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () => Get.to(const Start()), 
-              child: const Text("나라님")
-            ),
-            ElevatedButton(
               onPressed: () => Get.to(const Write()), 
               child: const Text("소리님")
             ),
@@ -29,10 +24,6 @@ class Home extends StatelessWidget {
               onPressed: () => Get.to(Login()), 
               child: const Text("woody")
             ),
-            // ElevatedButton(
-            //   onPressed: () => Get.to(const Test()), 
-            //   child: const Text("Test")
-            // ),
           ],
         ),
       ),

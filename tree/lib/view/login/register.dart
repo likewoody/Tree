@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:td_app/model/login/checkValidate.dart';
-import 'package:td_app/vm/vm_get_login.dart';
+import 'package:td_app/vm/vm_get_handler.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -22,11 +22,13 @@ class _RegisterState extends State<Register> {
   late FocusNode _pwFocus1;
   late FocusNode _pwFocus2;
   // 1번째 TextField가 정규성, 중복이 끝나면 true로 보여주기 위함
-  late bool showPasswordTextField;
+  late bool _showPasswordTextField;
   // email 인증이 끝나면 중복확인 버튼 비활성화
   late bool _isEmailDuplicated;
   // 상태관리용
-  late VMGetXLogin controller;
+  late VMGetHandler controller;
+  // 정규성 체크 후 중복 확인 클릭
+  late bool _duplicatedAlert;
 
 
   @override
@@ -40,17 +42,17 @@ class _RegisterState extends State<Register> {
     _emailFocus = FocusNode();
     _pwFocus1 = FocusNode();
     _pwFocus2 = FocusNode();
-    showPasswordTextField = false;
+    _showPasswordTextField = false;
     // textFieldList = [firstTextField()];
-    controller = VMGetXLogin();
+    controller = VMGetHandler();
     _isEmailDuplicated = false;
+    _duplicatedAlert = false;
   }
 
   // ---- Functions ----
-  alertEmailCheck(){
-    // controller.checkEmailForRegister();
-    // print("checkEmailReturn");
-    // print("${controller.checkEmailReturn} test teststs");
+  alertEmailCheck() async{
+    controller.email = emailCon.text;
+    await controller.checkEmailForRegister();
     if (controller.checkEmailReturn == emailCon.text){
       Get.defaultDialog(
         title: "경고",
@@ -70,10 +72,10 @@ class _RegisterState extends State<Register> {
           TextButton(
             onPressed: () {
               _isEmailDuplicated = true;
-              showPasswordTextField = true;
+              _showPasswordTextField = true;
               // body View에서만 이걸 보여줘도 되지 않는가?
               // 근데 alert창 이후에 바로 화면에 보여주려면 여기서 있어야 바로 화면에 보여진다.
-              showPasswordTextField ? secondTextField() : const SizedBox(width: 0, height: 0,);
+              _showPasswordTextField ? secondTextField() : const SizedBox(width: 0, height: 0,);
               Get.back();
             }, 
             child: const Text("확인")
@@ -150,11 +152,11 @@ class _RegisterState extends State<Register> {
                         contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
                       ),validator: (value) => CheckValidate().validateEmail(value ?? ""),
                       // Change가 발생하면 그리고 정규성이 통과됬을 때 alertCheck를 true로 바꾸고 alert 실행
-                      onChanged: (value) async{
-                        if (CheckValidate().validateEmail(value) != null) {
+                      onChanged: (value) {
+                        if (CheckValidate().validateEmail(value) == "") {
+                          _duplicatedAlert = true;
                           // print("check onfieldSubmitted");
-                          controller.email = emailCon.text;
-                          await controller.checkEmailForRegister();
+                          
                         }
                       },
                     ),
@@ -168,8 +170,7 @@ class _RegisterState extends State<Register> {
                   padding: const EdgeInsets.fromLTRB(0,0,0,33),
                   child: ElevatedButton(
                     onPressed: _isEmailDuplicated ? null : () {
-                      // 정규성이 통과 되었을 때만 alert을 통해 중복확인 체크
-                      alertEmailCheck();
+                      _duplicatedAlert ? alertEmailCheck() : null;
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromRGBO(60, 172, 19, 1),
@@ -340,7 +341,7 @@ class _RegisterState extends State<Register> {
           
                 firstTextField(),
                 // Email TextField가 진행이 되면 Password TextField Show
-                showPasswordTextField ? secondTextField() : const SizedBox(width: 0, height: 0,)
+                _showPasswordTextField ? secondTextField() : const SizedBox(width: 0, height: 0,)
               ]
             ),
           ),

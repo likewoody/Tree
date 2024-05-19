@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:td_app/view/common/appbar.dart';
 import 'package:td_app/view/login/login.dart';
 import 'package:td_app/view/setting/setting_password.dart';
+import 'package:td_app/vm/vm_get_handler.dart';
 
 class Setting extends StatelessWidget {
   Setting({super.key});
@@ -334,28 +336,29 @@ class Setting extends StatelessWidget {
           onPressed: () => Get.back(), 
           child: const Text('아니요')
         ),
-        TextButton(
-          onPressed: () async{
-            await _executeDelete();
-            Get.offAll(
-              null
-              // LoginView()
+        GetBuilder<VMGetHandler>(
+          init: VMGetHandler(),
+          builder: (controller) {
+            return TextButton(
+              onPressed: () async{
+                await _executeDelete(controller);
+                Get.offAll(
+                  Login()
+                );
+              },
+              child: const Text('예')
             );
           },
-          child: const Text('예')
         ),
       ]
     );
   }
 
-  _executeDelete() async{
+  _executeDelete(controller) async{
+    await controller.deactiveUser();
+    box.remove("userInfo");
     print("successfully deleted");
-    // await FirebaseFirestore.instance
-    //   .collection('user')
-    //   .doc(box.read('id'))
-    //   .update({
-    //     'status': 0
-    //   });
+    
   }
 
   _executeSignout() {
@@ -365,6 +368,7 @@ class Setting extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: (){
+            box.remove("userInfo");
             Get.offAll(
               // null
               Login()
@@ -378,6 +382,7 @@ class Setting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(box.read('userInfo'));
     // box.read('apiUser') != null ? apiUser = true : apiUser = false;
     return Scaffold(
       appBar: const PreferredSize(

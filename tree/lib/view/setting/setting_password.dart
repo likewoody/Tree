@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:td_app/model/login/checkValidate.dart';
 import 'package:td_app/view/common/appbar.dart';
+import 'package:td_app/vm/vm_get_handler.dart';
 
 class SetPassword extends StatefulWidget {
   const SetPassword({super.key});
@@ -18,11 +21,66 @@ class _SetPasswordState extends State<SetPassword> {
   final FocusNode _pwFocus1 = FocusNode();
   final FocusNode _pwFocus2 = FocusNode();
   final FocusNode _pwFocus3 = FocusNode();
-  // var provider;
-  String _userEmail = '';
-  // bool _apiUser = false;
   // 비밀번호 키 때문에
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+
+
+  // ---- Function ----
+  changedPassword(VMGetHandler controller) async{
+    final box = GetStorage();
+    final userInfo = box.read("userInfo");
+    
+    if (_pwCon1.text == _pwCon3.text){
+      alertMessage("현재 비밀번호와 새로운 \n비밀번호를 다르게 입력하세요.", 1);
+    }else if (_pwCon1.text == userInfo["password"] && _pwCon2.text == _pwCon3.text) {
+      // VM에 새로운 비밀번호 알려주기 넣어주기
+      controller.password = _pwCon3.text;
+
+      // 먼저 실행함으로써 밑에 changePassword 함수에 인자를 안주고 storedbox 안에서 정보를 준다.
+      await controller.changedStoredBox(userInfo);
+      // print("check passwor ${userInfo["password"]}");
+      // print("check passwor 2${controller.password}");
+      await controller.changePassword();
+      
+      alertMessage("비밀번호가 변경 되었습니다.", 2);
+    }else{
+      alertMessage("비밀번호를 확인 해주세요.", 1);
+    }
+  }
+
+  // ---- Alert ----
+  alertMessage(String text, int cnt){
+    // cnt는 Get.back()이 몇번 실행되야 하는지
+    switch (cnt) {
+      case 1:
+        Get.defaultDialog(
+          title: "알림",
+          middleText: text,
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(),
+              child: const Text("확인")
+            ),
+          ]
+        );
+      case 2:
+        Get.defaultDialog(
+          title: "알림",
+          middleText: text,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+                Get.back();
+              },
+              child: const Text("확인")
+            ),
+          ]
+        );
+    }
+  }
+
 
 
   // ---- View 1 ----
@@ -39,23 +97,22 @@ class _SetPasswordState extends State<SetPassword> {
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))
       ),
       height: 80,
-      child: TextButton(
-        onPressed: () {
-            // if(_apiUser ) {
-            //   provider.showWarnSanckBar();
-            // } else{
-            //   provider.formKey.currentState!.validate();
-            //   _clickButton();
-            // }
-        }, 
-        child: Text(
-          '비밀번호 설정',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.tertiary
-            ),
-          ),
+      child: GetBuilder<VMGetHandler>(
+        builder: (controller) {
+          return TextButton(
+            onPressed: () {
+                changedPassword(controller);
+            }, 
+            child: Text(
+              '비밀번호 설정',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.tertiary
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -100,15 +157,15 @@ class _SetPasswordState extends State<SetPassword> {
               child: Column(
                 children: [
                   _thirdBodyView(),
-                  ElevatedButton(
-                    child: const Text('비밀번호 변경하기'),
-                    onPressed: (){
-                      // if(apiUser ) {
-                      //   provider.showWarnSanckBar();
-                      // } else{
-                      //   provider.formKey.currentState!.validate();
-                      //   _clickButton();
-                      // }
+                  GetBuilder<VMGetHandler>(
+                    init: VMGetHandler(),
+                    builder: (controller) {
+                      return ElevatedButton(
+                      child: const Text('비밀번호 변경하기'),
+                        onPressed: (){
+                          changedPassword(controller);
+                        },
+                      );
                     },
                   ),
                 ],
@@ -216,22 +273,6 @@ class _SetPasswordState extends State<SetPassword> {
         ],  
       );
   }
-
-
-  _clickButton(){
-    // provider.inputCurrentPassword = pwCon1.text;
-    // provider.fNewPassword = pwCon2.text;
-    // provider.sNewPassword =  pwCon3.text;
-    // print('pwCon1.text : ${pwCon1.text}');
-    // print('pwCon2.text : ${pwCon2.text}');
-    // print('pwCon3.text : ${pwCon3.text}');
-    // provider.curPasswordCheck();
-    // if(provider.changePassword()){
-    //   provider.showSuccessfulAlert();
-    // };
-  }
-
-  
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:td_app/view/login/findPw.dart';
 import 'package:td_app/view/login/register.dart';
 import 'package:td_app/view/common/tabbar.dart';
 import 'package:td_app/vm/database_handler.dart';
-import 'package:td_app/vm/vm_get_login.dart';
+import 'package:td_app/vm/vm_get_handler.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -31,20 +31,18 @@ class Login extends StatelessWidget {
 
 
   // ---- Functions ----
-  loginAlert(VMGetXLogin controller){
+  loginAlert(VMGetHandler controller){
     // print(controller.id);
     // print(controller.password);
     // print(controller.email);
-    if (controller.checkRe) {
+    print(controller.checkActive);
+    print(controller.checkPassword);
+    if (controller.checkPassword && controller.checkActive) {
       // Get.ofAll 해야지 뒤로가기 버튼 안생김
       Get.offAll(const CommonTabbar());
-      Map<String, String> map = {
-        'id': controller.id.toString(),
-        'email':controller.email,
-        'password':controller.password
-      };
-      // 유저 정보 보내는 box
-      box.write("userInfo", map);
+      
+      // VM에서 GetStorage store datas 만들기
+      controller.changedStoredBox(null);
     }else{
       Get.defaultDialog(
         title: "경고",
@@ -186,8 +184,8 @@ class Login extends StatelessWidget {
             ),
             // Login Button
             // 이메일 비밀번호 확인을 위해 VM에서 Login Butotn만 관리
-            GetBuilder<VMGetXLogin>(
-              init: VMGetXLogin(),
+            GetBuilder<VMGetHandler>(
+              init: VMGetHandler(),
               builder: (controller) {
                 return Padding(
                   padding: const EdgeInsets.all(10.0),

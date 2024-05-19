@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:td_app/model/login/checkValidate.dart';
 import 'package:td_app/view/login/changePw.dart';
-import 'package:td_app/vm/vm_get_login.dart';
+import 'package:td_app/vm/vm_get_handler.dart';
 
 
 class FindPassword extends StatelessWidget {
@@ -56,8 +56,8 @@ class FindPassword extends StatelessWidget {
   
   // ---- View ----
   Widget bodyView(){
-    return GetBuilder<VMGetXLogin>(
-      init: VMGetXLogin(),
+    return GetBuilder<VMGetHandler>(
+      init: VMGetHandler(),
       builder: (controller) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,

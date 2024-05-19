@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:td_app/model/login/checkValidate.dart';
-import 'package:td_app/vm/vm_get_login.dart';
+import 'package:td_app/vm/vm_get_handler.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -26,7 +26,7 @@ class _RegisterState extends State<Register> {
   // email 인증이 끝나면 중복확인 버튼 비활성화
   late bool _isEmailDuplicated;
   // 상태관리용
-  late VMGetXLogin controller;
+  late VMGetHandler controller;
   // 정규성 체크 후 중복 확인 클릭
   late bool _duplicatedAlert;
 
@@ -44,7 +44,7 @@ class _RegisterState extends State<Register> {
     _pwFocus2 = FocusNode();
     _showPasswordTextField = false;
     // textFieldList = [firstTextField()];
-    controller = VMGetXLogin();
+    controller = VMGetHandler();
     _isEmailDuplicated = false;
     _duplicatedAlert = false;
   }

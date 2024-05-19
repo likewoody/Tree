@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:td_app/model/login/checkValidate.dart';
-import 'package:td_app/vm/vm_get_login.dart';
+import 'package:td_app/vm/vm_get_handler.dart';
 
 class ChangePw extends StatelessWidget {
   ChangePw({super.key});
@@ -52,8 +52,8 @@ class ChangePw extends StatelessWidget {
   Widget bodyView(){
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
-      child: GetBuilder<VMGetXLogin>(
-        init: VMGetXLogin(),
+      child: GetBuilder<VMGetHandler>(
+        init: VMGetHandler(),
         builder: (controller) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,

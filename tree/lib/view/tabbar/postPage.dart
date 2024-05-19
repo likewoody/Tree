@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:td_app/view/common/appbar.dart';
 import 'package:td_app/view/post/detail.dart';
 import 'package:td_app/view/write/write.dart';
@@ -14,11 +15,13 @@ class PostPage extends StatelessWidget {
                       {"img":"images/bee.png", "content":"경주 여행", "date":"2022-11-12"},
                       {"img":"images/tree.png", "content":"강원 여행", "date":"2022-11-12"}
   ];
-  // final box = GetStorage();
+  final box = GetStorage();
 
   // ---- View ----
   Widget bodyView(){
-    // print(box.read('userInfo'));
+    print("${box.read('userInfo')} inside post PAge");
+
+    print("${box.read('userInfo')}");
     // print(box.read('email'));
     // print(box.read('password'));
     return InkWell(

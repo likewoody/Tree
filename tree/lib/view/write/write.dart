@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:td_app/model/write/writeModel.dart';
+import 'package:td_app/vm/database_handler.dart';
 
 class Write extends StatefulWidget {
   const Write({super.key});
@@ -21,6 +23,7 @@ class _WriteState extends State<Write> {
   late DateTime day2Select;
   late int travelDay;
   late int dayCnt;
+  late bool dayisSelect;
 
   @override
   void initState() {
@@ -36,6 +39,7 @@ class _WriteState extends State<Write> {
     day2Select = DateTime.now(); // 여행의 마지막날
     travelDay = 0; // 여행 일수
     dayCnt = 0; // 여행 기록하는 곳에 출력할 숫자
+    dayisSelect = false;
   }
 
   Widget dayWidget() {
@@ -86,9 +90,6 @@ class _WriteState extends State<Write> {
                       child: TextField(
                         textAlignVertical: TextAlignVertical.center,
                         controller: travelPlaceController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
                       ),
                     ),
                   ),
@@ -159,6 +160,7 @@ class _WriteState extends State<Write> {
                                           day2Controller.text = "${day2Select}";
                                           Get.back();
                                           alertDateSelect();
+                                          dayisSelect = true;
                                         },
                                         child: Text("선택"))
                                   ],
@@ -262,8 +264,30 @@ class _WriteState extends State<Write> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  saveCurrentDayText();
-                  Get.back();
+                  // if (dayisSelect == true) {
+                  //   saveCurrentDayText();
+                  //   Get.back();
+                  // } else {
+                  //   Get.defaultDialog(
+                  //       title: "경고",
+                  //       content: Center(
+                  //         child: Column(
+                  //           children: [
+                  //             Text("날짜를 입력해주세요"),
+                  //             TextButton(onPressed: () {}, child: Text("Ok"))
+                  //           ],
+                  //         ),
+                  //       ));
+                  // }
+                  var stringWriteList = "";
+                  stringWriteList = writeList.join('/../');
+                  saveWriteInfo(
+                      travelPlaceController.text,
+                      day1Controller.text,
+                      day2Controller.text,
+                      travelMateController.text,
+                      weatherController.text,
+                      stringWriteList);
                 },
                 child: Text("업로드 하기"),
               )
@@ -308,5 +332,18 @@ class _WriteState extends State<Write> {
       travelDay = day2Select.difference(day1Select).inDays + 1;
       print(travelDay);
     }
+  }
+
+  saveWriteInfo(String loc, String day1, String day2, String mate,
+      String weather, String list) async {
+    var dbHandler = DatabaseHandler();
+    // await dbHandler.createWriteTable();
+    await dbHandler.insertWrite(WriteModel(
+        location: loc,
+        day1: day1,
+        day2: day2,
+        mate: mate,
+        weather: weather,
+        travelList: list));
   }
 }

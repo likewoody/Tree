@@ -10,9 +10,11 @@ class DatabaseHandler {
       join(path, 'user.db'),
       onCreate: (db, version) async {
         await db.execute(
-            "create table user (id integer primary key autoincrement, email text, password text, active_state integer)");
+          "create table user (id integer primary key autoincrement, email text, password text, active_state integer)");
+        await db.execute( 
+          "create table write (id integer primary key autoincrement, location text, day1 text, day2 text, mate text, weather text, travelList text)");
         await db.execute(
-            "create table write (id integer primary key autoincrement, location text, day1 text, day2 text, mate text, weather text, travelList text)");
+          "create table enquire (id integer primary key autoincrement, title text, content text, insertDate date, image blob)");
       },
       version: 1,
     );

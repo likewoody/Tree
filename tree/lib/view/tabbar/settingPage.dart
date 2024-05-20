@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:td_app/view/common/appbar.dart';
 import 'package:td_app/view/login/login.dart';
+import 'package:td_app/view/setting/enquire.dart';
+import 'package:td_app/view/setting/enquireList.dart';
+import 'package:td_app/view/setting/setting_nickname.dart';
 import 'package:td_app/view/setting/setting_password.dart';
 import 'package:td_app/vm/vm_get_handler.dart';
 
@@ -126,19 +128,7 @@ class Setting extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0,5,15,5),
               child : IconButton (
                 onPressed: () async { 
-                  await Get.to(
-                    null
-                  //   SetEmail(apiUser: apiUser,))!.then((value) {
-                  //   if (box.read('successfulChanged')) {
-                  //     String newEmail = box.read('changedEmail');
-                  //     box.remove('successfulChanged');
-                  //     box.remove('email');
-                  //     box.write('email', newEmail);
-                  //     _streamBuidler();
-                  //     setState(() {});
-                  //   }
-                  // }
-                  );
+                  await Get.to(SetNickname());
                 },
                 icon:const  Icon(Icons.arrow_forward_ios)
               ),
@@ -199,8 +189,8 @@ class Setting extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0,5,15,5),
               child: IconButton(
                 onPressed: () => Get.to(
-                  null
-                  // Enquire()
+                  // null
+                  Enquire()
                 ), 
                 icon:const  Icon(Icons.arrow_forward_ios)
               ),
@@ -219,8 +209,8 @@ class Setting extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0,5,15,5),
               child: IconButton(
                 onPressed: () => Get.to(
-                  null
-                  // EnquireList()
+                  // null
+                  EnquireList()
                 ), 
                 icon:const  Icon(Icons.arrow_forward_ios)
               ),

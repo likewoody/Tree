@@ -15,15 +15,4 @@ class WriteModel {
       required this.mate,
       required this.weather,
       required this.travelList});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'location': location,
-      'day1': day1,
-      'day2': day2,
-      'mate': mate,
-      'weather': weather,
-      'travelList': travelList,
-    };
-  }
 }

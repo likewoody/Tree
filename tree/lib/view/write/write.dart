@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:td_app/model/write/writeModel.dart';
+import 'package:td_app/view/write/write_view.dart';
 import 'package:td_app/vm/database_handler.dart';
+import 'package:td_app/vm/wrire/write_vm.dart';
 
 class Write extends StatefulWidget {
   const Write({super.key});
@@ -12,17 +13,28 @@ class Write extends StatefulWidget {
 }
 
 class _WriteState extends State<Write> {
+  // textfield Controller
   late TextEditingController travelPlaceController;
   late TextEditingController day1Controller;
   late TextEditingController day2Controller;
   late TextEditingController travelMateController;
   late TextEditingController weatherController;
   late TextEditingController writeController;
+
+  // n일치의 기록을 저장할 리스트
   late List<String> writeList;
+
+  // 여행 첫째날과 마지막날
   late DateTime day1Select;
   late DateTime day2Select;
+
+  // 여행 총 일수
   late int travelDay;
+
+  // 기록 창에 띄워줄 숫자
   late int dayCnt;
+
+  // 날짜 선택 유무
   late bool dayisSelect;
 
   @override
@@ -264,33 +276,41 @@ class _WriteState extends State<Write> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // if (dayisSelect == true) {
-                  //   saveCurrentDayText();
-                  //   Get.back();
-                  // } else {
-                  //   Get.defaultDialog(
-                  //       title: "경고",
-                  //       content: Center(
-                  //         child: Column(
-                  //           children: [
-                  //             Text("날짜를 입력해주세요"),
-                  //             TextButton(onPressed: () {}, child: Text("Ok"))
-                  //           ],
-                  //         ),
-                  //       ));
-                  // }
+                  if (dayisSelect == true) {
+                    saveCurrentDayText();
+                    Get.back();
+                  } else {
+                    Get.defaultDialog(
+                        title: "경고",
+                        content: Center(
+                          child: Column(
+                            children: [
+                              Text("날짜를 입력해주세요"),
+                              TextButton(onPressed: () {}, child: Text("Ok"))
+                            ],
+                          ),
+                        ));
+                  }
                   var stringWriteList = "";
                   stringWriteList = writeList.join('/../');
-                  saveWriteInfo(
+                  var vm = WriteVm();
+                  vm.insertWrite(
                       travelPlaceController.text,
                       day1Controller.text,
                       day2Controller.text,
                       travelMateController.text,
                       weatherController.text,
                       stringWriteList);
+                  print(stringWriteList);
                 },
                 child: Text("업로드 하기"),
-              )
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    // Get.to(WriteView());
+                    // DatabaseHandler().queryWrite();
+                  },
+                  child: Text("view로 이동"))
             ],
           ),
         ),
@@ -332,18 +352,5 @@ class _WriteState extends State<Write> {
       travelDay = day2Select.difference(day1Select).inDays + 1;
       print(travelDay);
     }
-  }
-
-  saveWriteInfo(String loc, String day1, String day2, String mate,
-      String weather, String list) async {
-    var dbHandler = DatabaseHandler();
-    // await dbHandler.createWriteTable();
-    await dbHandler.insertWrite(WriteModel(
-        location: loc,
-        day1: day1,
-        day2: day2,
-        mate: mate,
-        weather: weather,
-        travelList: list));
   }
 }

@@ -8,7 +8,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // createDB();
     return Scaffold(
       appBar: AppBar(
         title: const Text("임의 Home 화면"),
@@ -28,8 +27,4 @@ class Home extends StatelessWidget {
       ),
     );
   }
-
-  // createDB() {
-  //   DatabaseHandler().createWriteTable();
-  // }
 }

@@ -10,11 +10,11 @@ class DatabaseHandler {
       join(path, 'user.db'),
       onCreate: (db, version) async {
         await db.execute(
-          "create table user (id integer primary key autoincrement, email text, password text, active_state integer)");
-        await db.execute( 
-          "create table write (id integer primary key autoincrement, location text, day1 text, day2 text, mate text, weather text, travelList text)");
+            "create table user (id integer primary key autoincrement, email text, password text, active_state integer)");
         await db.execute(
-          "create table enquire (id integer primary key autoincrement, title text, content text, insertDate date, image blob)");
+            "create table write (id integer primary key autoincrement, location text, day1 text, day2 text, mate text, weather text, travelList text)");
+        await db.execute(
+            "create table enquire (id integer primary key autoincrement, title text, content text, insertDate date, image blob)");
       },
       version: 1,
     );
@@ -120,4 +120,11 @@ class DatabaseHandler {
     );
     return result;
   }
+
+  // queryWrite() async {
+  //   final Database db = await initializeDB();
+  //   final queryResult = await db.rawQuery('select * from write where id = 1');
+  //   // 맵 형식인 result를 List로 변환하여 card로 사용한다.
+  //   print(queryResult);
+  // }
 }

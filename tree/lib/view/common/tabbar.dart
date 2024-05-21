@@ -33,6 +33,7 @@ class _CommonTabbarState extends State<CommonTabbar> with SingleTickerProviderSt
       //   title: const Text("탭바입니다."),
       // ),
       body: TabBarView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: tabController,
         children: [
           PostPage(),

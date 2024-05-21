@@ -6,7 +6,7 @@ import 'package:td_app/view/login/findPw.dart';
 import 'package:td_app/view/login/register.dart';
 import 'package:td_app/view/common/tabbar.dart';
 import 'package:td_app/vm/database_handler.dart';
-import 'package:td_app/vm/vm_get_handler.dart';
+import 'package:td_app/vm/woody/vm_get_handler.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -35,8 +35,8 @@ class Login extends StatelessWidget {
     // print(controller.id);
     // print(controller.password);
     // print(controller.email);
-    print(controller.checkActive);
-    print(controller.checkPassword);
+    // print(controller.checkActive);
+    // print(controller.checkPassword);
     if (controller.checkPassword && controller.checkActive) {
       // Get.ofAll 해야지 뒤로가기 버튼 안생김
       Get.offAll(const CommonTabbar());
@@ -221,70 +221,6 @@ class Login extends StatelessWidget {
               },
               
             ),
-            // Login Button
-              
-            // // Google InkWell
-            // Padding(
-            //   padding: const EdgeInsets.all(10.0),
-            //   child: InkWell(
-            //     onTap: () async {
-            //       // await authService.signInWithGoogle();
-            //       print("clicked Google Logo");
-            //     },
-            //     child: Container(
-            //       color: Colors.grey[200],
-            //       width: 200,
-            //       height: 50,
-            //       child: Row(
-            //         children: [
-            //           Padding(
-            //             padding: const EdgeInsets.fromLTRB(30,0,0,0),
-            //             child: Image.asset(
-            //               "images/googleLogo.png",
-            //               height: 25,
-            //               fit: BoxFit.fill,
-            //             ),
-            //           ),
-                  
-            //           const Padding(
-            //             padding: EdgeInsets.fromLTRB(10,0,0,0),
-            //             child: Text(
-            //               "구글 로그인",
-            //               style: TextStyle(
-            //                 color: Colors.black54,
-            //                 fontSize: 20
-            //               ),
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // // Google InkWell
-              
-            // // Naver InkWell
-            // InkWell(
-            //   onTap: () async {
-            //     // await authService.signInWithGoogle();
-            //     print("clicked Naver Logo");
-            //   },
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     children: [
-              
-            //       Image.asset(
-            //         "images/naverLogo.png",
-            //         width: 200,
-            //         height: 50,
-            //         fit: BoxFit.cover,
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // // Naver InkWell
-              
-              
           ],
         )
       ),

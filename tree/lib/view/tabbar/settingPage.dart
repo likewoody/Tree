@@ -7,7 +7,7 @@ import 'package:td_app/view/setting/enquire.dart';
 import 'package:td_app/view/setting/enquireList.dart';
 import 'package:td_app/view/setting/setting_nickname.dart';
 import 'package:td_app/view/setting/setting_password.dart';
-import 'package:td_app/vm/vm_get_handler.dart';
+import 'package:td_app/vm/woody/vm_get_handler.dart';
 
 class Setting extends StatelessWidget {
   Setting({super.key});

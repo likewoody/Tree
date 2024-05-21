@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:td_app/model/login/checkValidate.dart';
 import 'package:td_app/view/login/changePw.dart';
-import 'package:td_app/vm/vm_get_handler.dart';
+import 'package:td_app/vm/woody/vm_get_handler.dart';
 
 
 class FindPassword extends StatelessWidget {

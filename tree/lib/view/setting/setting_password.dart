@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:td_app/model/login/checkValidate.dart';
 import 'package:td_app/view/common/appbar.dart';
-import 'package:td_app/vm/vm_get_handler.dart';
+import 'package:td_app/vm/woody/vm_get_handler.dart';
 
 class SetPassword extends StatefulWidget {
   const SetPassword({super.key});

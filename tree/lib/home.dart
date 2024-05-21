@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:td_app/view/login/login.dart';
 import 'package:td_app/view/write/write.dart';
-import 'package:td_app/vm/database_handler.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});

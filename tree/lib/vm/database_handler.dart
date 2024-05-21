@@ -1,6 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:td_app/model/login/user.dart';
+import 'package:td_app/model/post/post.dart';
 import 'package:td_app/model/write/writeModel.dart';
 
 class DatabaseHandler {
@@ -20,21 +21,8 @@ class DatabaseHandler {
     );
   }
 
-  // about post
-  // Future<Database> initializePost() async{
-  //   String path = await getDatabasesPath();
-  //   return openDatabase(
-  //     join(path, 'user.db'),
-  //     onCreate: (db, version) async{
-  //       await db.execute(
-  //         "create table user (id integer primary key autoincrement, email text, password text)"
-  //       );
-  //     },
-  //     version: 1,
-  //   );
-  // }
-
   Future<List<User>> queryUser(User user) async {
+    // print("check database handler ㅣ이ㅣ이이이 ${user.email} 이메일 그리고 ${user.password} 패스워드 체크 ");
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
         'select * from user where email=? and password=?',
@@ -42,18 +30,6 @@ class DatabaseHandler {
     // 맵 형식인 result를 List로 변환하여 card로 사용한다.
     return queryResult.map((e) => User.fromMap(e)).toList();
   }
-
-  //
-  // Future<List<User>> queryPost(User user) async{
-  //   final Database db = await initializeDB();
-  //   final List<Map<String, Object?>> queryResult
-  //     = await db.rawQuery(
-  //       'select * from user where email=? and password=?',
-  //       [user.email, user.password]
-  //     );
-  //   // 맵 형식인 result를 List로 변환하여 card로 사용한다.
-  //   return queryResult.map((e) => User.fromMap(e)).toList();
-  // }
 
   // 비밀번호 찾기에서 사용할 email 확인
   Future<List<Map<String, Object?>>> queryFindEmail(User user) async {
@@ -87,6 +63,16 @@ class DatabaseHandler {
         'update user set active_state = 0 where id = ?',
         // ?에 값 넣기
         [code]);
+  }
+
+  // ---- Post ----
+  Future<List<Post>> queryPost() async {
+    final Database db = await initializeDB();
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
+        'select location, day1, day2 from write',
+    );
+    // 맵 형식인 result를 List로 변환하여 card로 사용한다.
+    return queryResult.map((e) => Post.fromMap(e)).toList();
   }
 
   // -----------------------------------

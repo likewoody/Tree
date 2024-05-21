@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:td_app/model/login/user.dart';
+import 'package:td_app/model/post/post.dart';
 import 'package:td_app/vm/database_handler.dart';
 
 class VMGetHandler extends GetxController{
@@ -73,13 +74,14 @@ class VMGetHandler extends GetxController{
   // ---- GetStorage stored datas ----
   changedStoredBox(userInfo) {
     Map<String, String> map;
-
+    
     if (userInfo == null){
       // login시 보낼 정보
       map = {
         'id': id.toString(),
         'email':email,
-        'password':password
+        'password':password,
+        'active_state':"1"
       };
     } else {
       email = userInfo['email'];
@@ -93,21 +95,13 @@ class VMGetHandler extends GetxController{
     // 유저 정보 보내는 box
     box.write("userInfo", map); 
     // 이걸 안해주면 changePassword에 파라미터를 받아야 한다.
-    
-
-    
-
-    // 비밀번호가 바뀌면서 새로운 정보로 저장하기
-    // if (userInfo['password'] == password) {
-    //   
-    // } else{
-    //   
-    // }
-    
-    
-    
-
-    
   }
+  // ---- Search Post ----
+  Future<List<Post>> searchPostDB() async{
+    final result = await handler.queryPost();
+    
+    return result;
+  }
+
 
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:td_app/view/tabbar/postPage.dart';
+import 'package:td_app/view/tabbar/post_page.dart';
 import 'package:td_app/view/tabbar/settingPage.dart';
 
 class CommonTabbar extends StatefulWidget {

@@ -14,6 +14,7 @@ class VMGetHandler extends GetxController{
   bool checkActive = false;
   DatabaseHandler handler = DatabaseHandler();
   final box = GetStorage();
+  List<Post> posts = [];
 
   Future<int> userResigeter() async{
     User user = User(email: email, password: password);
@@ -96,12 +97,26 @@ class VMGetHandler extends GetxController{
     box.write("userInfo", map); 
     // 이걸 안해주면 changePassword에 파라미터를 받아야 한다.
   }
+
+
+
   // ---- Search Post ----
   Future<List<Post>> searchPostDB() async{
-    final result = await handler.queryPost();
+    // print("왜 안되지 하");
     
-    return result;
+    posts = await handler.queryPost();
+    // posts.forEach((element) {
+    //   print(element.id);
+    //   print(element.day1);
+    //   print(element.day2);
+    //   print(element.location);
+    // });
+    return posts;
   }
 
-
+  // ---- Delete Post ----
+  deletePost(id) async{
+    print(id);
+    await handler.deletePost(id);
+  }
 }

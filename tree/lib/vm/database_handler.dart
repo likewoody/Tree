@@ -21,6 +21,8 @@ class DatabaseHandler {
     );
   }
 
+
+  // ---- User ----
   Future<List<User>> queryUser(User user) async {
     // print("check database handler ㅣ이ㅣ이이이 ${user.email} 이메일 그리고 ${user.password} 패스워드 체크 ");
     final Database db = await initializeDB();
@@ -65,14 +67,25 @@ class DatabaseHandler {
         [code]);
   }
 
+
+
   // ---- Post ----
   Future<List<Post>> queryPost() async {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
-        'select location, day1, day2 from write',
+        'select * from write',
     );
     // 맵 형식인 result를 List로 변환하여 card로 사용한다.
     return queryResult.map((e) => Post.fromMap(e)).toList();
+  }
+
+  Future<void> deletePost(int id) async {
+    final Database db = await initializeDB();
+    print("deletePOst Check inside db handler $id");
+    await db.rawDelete(
+        'delete from write where id = ?',
+        // ?에 값 넣기
+        [id]);
   }
 
   // -----------------------------------

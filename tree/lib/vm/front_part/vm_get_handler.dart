@@ -14,13 +14,20 @@ class VMGetHandler extends GetxController{
   bool checkActive = false;
   DatabaseHandler handler = DatabaseHandler();
   final box = GetStorage();
+
+  // for post part 
   List<Post> posts = [];
+  // List<String> day1 = [];
+  // List<String> day2 = [];
+  // List<String> location = [];
+
+
+
 
   Future<int> userResigeter() async{
     User user = User(email: email, password: password);
     int result = await handler.insertUser(user);
     return result;
-
   }
 
 
@@ -102,21 +109,25 @@ class VMGetHandler extends GetxController{
 
   // ---- Search Post ----
   Future<List<Post>> searchPostDB() async{
-    // print("왜 안되지 하");
+    print("들어와?");
     
     posts = await handler.queryPost();
     // posts.forEach((element) {
-    //   print(element.id);
-    //   print(element.day1);
-    //   print(element.day2);
-    //   print(element.location);
+    //   day1.add(element.day1);
+    //   day2.add(element.day2);
+    //   location.add(element.location);
     // });
+
+    // update();
     return posts;
+
+    // return posts;
   }
 
   // ---- Delete Post ----
   deletePost(id) async{
     print(id);
     await handler.deletePost(id);
+    update();
   }
 }

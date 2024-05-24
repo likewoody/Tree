@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:td_app/vm/wrire/write_vm.dart';
 
 class WriteView extends StatelessWidget {
@@ -16,6 +17,9 @@ class WriteView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final box = GetStorage();
+    final userid = box.read('postId');
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('detail view'),

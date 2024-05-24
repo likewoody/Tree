@@ -15,4 +15,13 @@ class WriteModel {
       required this.mate,
       required this.weather,
       required this.travelList});
+
+  WriteModel.fromMap(Map<String, dynamic> res)
+      : id = res['id'],
+        location = res['location'],
+        day1 = res['day1'],
+        day2 = res['day2'],
+        mate = res['mate'],
+        weather = res['weather'],
+        travelList = res['travelList'];
 }

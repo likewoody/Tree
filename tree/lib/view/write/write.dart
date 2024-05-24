@@ -20,8 +20,8 @@ class _WriteState extends State<Write> {
   late TextEditingController weatherController;
   late TextEditingController writeController;
   late List<String> writeList;
-  late DateTime day1Select;
-  late DateTime day2Select;
+  late int day1Select;
+  late int day2Select;
   late int travelDay;
   late int dayCnt;
   late bool dayisSelect;
@@ -36,8 +36,11 @@ class _WriteState extends State<Write> {
     weatherController = TextEditingController();
     writeController = TextEditingController();
     writeList = [""];
-    day1Select = DateTime.now();
-    day2Select = DateTime.now();
+    day1Select = day1Select = int.parse(
+        '${DateTime.now().year % 100}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().day.toString().padLeft(2, '0')}');
+    day2Select = int.parse(
+        '${DateTime.now().year % 100}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().day.toString().padLeft(2, '0')}');
+    ;
     travelDay = 0;
     dayCnt = 0;
     dayisSelect = false;
@@ -138,8 +141,8 @@ class _WriteState extends State<Write> {
                                         mode: CupertinoDatePickerMode.date,
                                         onDateTimeChanged: (value) {
                                           setState(() {
-                                            day1Select = DateTime(value.year,
-                                                value.month, value.day);
+                                            day1Select = int.parse(
+                                                '${value.year % 100}${value.month.toString().padLeft(2, '0')}${value.day.toString().padLeft(2, '0')}');
                                           });
                                         },
                                       ),
@@ -147,7 +150,7 @@ class _WriteState extends State<Write> {
                                     TextButton(
                                       onPressed: () {
                                         day1Controller.text =
-                                            "${day1Select.year}-${day1Select.month.toString().padLeft(2, '0')}-${day1Select.day.toString().padLeft(2, '0')}";
+                                            changeDayText(day1Select);
                                         Get.back();
                                       },
                                       child: Text("선택"),
@@ -183,8 +186,8 @@ class _WriteState extends State<Write> {
                                         mode: CupertinoDatePickerMode.date,
                                         onDateTimeChanged: (value) {
                                           setState(() {
-                                            day2Select = DateTime(value.year,
-                                                value.month, value.day);
+                                            day2Select = int.parse(
+                                                '${value.year % 100}${value.month.toString().padLeft(2, '0')}${value.day.toString().padLeft(2, '0')}');
                                           });
                                         },
                                       ),
@@ -192,7 +195,7 @@ class _WriteState extends State<Write> {
                                     TextButton(
                                       onPressed: () {
                                         day2Controller.text =
-                                            "${day2Select.year}-${day2Select.month.toString().padLeft(2, '0')}-${day2Select.day.toString().padLeft(2, '0')}";
+                                            changeDayText(day2Select);
                                         Get.back();
                                         alertDateSelect();
                                         dayisSelect = true;
@@ -318,7 +321,18 @@ class _WriteState extends State<Write> {
               ]),
               ElevatedButton(
                 onPressed: () {
-                  Get.to(PostPage());
+                  var stringWriteList = "";
+                  stringWriteList = writeList.join('/../');
+                  var vm = WriteVm();
+                  vm.insertWrite(
+                      travelPlaceController.text,
+                      day1Controller.text,
+                      day2Controller.text,
+                      travelMateController.text,
+                      weatherController.text,
+                      stringWriteList);
+                  print(stringWriteList);
+                  // Get.offAll(PostPage());
                 },
                 child: Text("업로드 하기"),
               ),
@@ -342,8 +356,8 @@ class _WriteState extends State<Write> {
     }
   }
 
-  void alertDateSelect() {
-    if (!day2Select.isAfter(day1Select)) {
+  alertDateSelect() {
+    if (day2Select < day1Select) {
       Get.defaultDialog(
         barrierDismissible: false,
         title: "경고",
@@ -363,11 +377,19 @@ class _WriteState extends State<Write> {
       );
       day2Controller.text = "";
     } else {
-      if (day2Select.isAtSameMomentAs(day1Select)) {
+      if (day1Select == day2Select) {
         travelDay = 0;
       } else {
-        travelDay = day2Select.difference(day1Select).inDays + 1;
+        travelDay = day2Select - day1Select;
       }
     }
+  }
+
+  changeDayText(int daySelect) {
+    var year = daySelect.toString().substring(0, 2);
+    var month = daySelect.toString().substring(2, 4);
+    var day = daySelect.toString().substring(4, 6);
+
+    return "${year}-${month}-${day}";
   }
 }

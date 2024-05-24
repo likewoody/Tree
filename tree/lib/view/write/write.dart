@@ -332,7 +332,7 @@ class _WriteState extends State<Write> {
                       weatherController.text,
                       stringWriteList);
                   print(stringWriteList);
-                  Get.offAll(PostPage());
+                  // Get.offAll(PostPage());
                 },
                 child: Text("업로드 하기"),
               ),

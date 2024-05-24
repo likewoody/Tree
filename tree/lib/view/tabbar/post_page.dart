@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:td_app/model/post/post.dart';
 import 'package:td_app/view/common/appbar.dart';
 import 'package:td_app/view/post/detail.dart';
 import 'package:td_app/view/write/write.dart';
@@ -16,20 +18,6 @@ class PostPage extends StatelessWidget {
     return day.toString().replaceAll("-", ".").substring(2,10);
   }
 
-  // ---- Textbutton Widget ----
-  Widget btnText(data, double fontSize){
-    return TextButton(
-      onPressed: () => Get.to(const Detail()), 
-      child: Text(
-        data,
-        style: TextStyle(
-          fontSize: fontSize,
-          color: Colors.black
-        ),
-      )
-    );
-  }
-
 
   // ---- Delete Sliable ----
   selectDelete(controller, snapshot, index){
@@ -41,9 +29,10 @@ class PostPage extends StatelessWidget {
   // ---- View ----
   Widget bodyView(){
     return InkWell (
-      child: FutureBuilder(
+      child: FutureBuilder<List<Post>>(
           future: vmController.searchPostDB(),
           builder: (context, snapshot) {
+            // vmController.searchPostDB();
             // return GetBuilder(
             //     init: VMGetHandler(),
             //     builder: (controller) {
@@ -67,35 +56,48 @@ class PostPage extends StatelessWidget {
                           height: 120,
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: Card(
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(30,0,0,0),
-                                    child: Column(
-                                      children: [
-                                        btnText(formattingDays(snapshot.data![index].day1), 12),
-                                        // const Text("~", style: TextStyle(fontSize: 12),),
-                                        btnText(formattingDays(snapshot.data![index].day2), 12),
-                                      ],
+                            child: GestureDetector(
+                              onTap: () {
+                                final box = GetStorage();
+                                box.write("postId", vmController.posts[index].id);
+                                Get.to(Detail());
+                              },
+                              child: Card(
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(40,0,0,0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            formattingDays(snapshot.data![index].day1),
+                                            style: const TextStyle(
+                                              fontSize: 14
+                                            ),
+                                          ),
+                                          const Text("~", style: TextStyle(fontSize: 12),),
+                                          Text(
+                                            formattingDays(snapshot.data![index].day2),
+                                            style: const TextStyle(
+                                              fontSize: 14
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(50,0,0,0),
-                                    child: btnText(snapshot.data![index].location, 24),
-                                    // child: TextButton(
-                                    //   onPressed: () => Get.to(const Detail()), 
-                                    //   child: Text(
-                                    //     snapshot.data![index].location,
-                                    //     style: const TextStyle(
-                                    //       fontSize: 24,
-                                    //       color: Colors.black
-                                    //     ),
-                                    //   )
-                                    // ),
-                                  ),
-                                ],
+                                    
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(30,0,0,0),
+                                      child: Text(
+                                        snapshot.data![index].location,
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -123,12 +125,7 @@ class PostPage extends StatelessWidget {
       ),
       body: bodyView(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.to(const Write()),
-        // ?.then((value) async{
-          // VMGetHandler vmController = VMGetHandler();
-          // print("갔다가 올까?");
-          // vmController.searchPostDB();
-        // }),
+        onPressed: () => Get.to(const Write())!.then((value) => vmController.searchPostDB()),
         child: const Icon(Icons.add),
         backgroundColor: Colors.green[50],
       ),

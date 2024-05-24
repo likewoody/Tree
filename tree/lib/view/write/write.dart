@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:td_app/view/common/tabbar.dart';
 import 'package:td_app/view/tabbar/post_page.dart';
 import 'package:td_app/view/write/write_view.dart';
 import 'package:td_app/vm/wrire/write_vm.dart';
@@ -321,6 +322,7 @@ class _WriteState extends State<Write> {
               ]),
               ElevatedButton(
                 onPressed: () {
+                  saveCurrentDayText();
                   var stringWriteList = "";
                   stringWriteList = writeList.join('/../');
                   var vm = WriteVm();
@@ -332,7 +334,7 @@ class _WriteState extends State<Write> {
                       weatherController.text,
                       stringWriteList);
                   print(stringWriteList);
-                  // Get.offAll(PostPage());
+                  // Get.offAll(const CommonTabbar());
                 },
                 child: Text("업로드 하기"),
               ),

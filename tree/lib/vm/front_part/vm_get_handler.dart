@@ -108,27 +108,13 @@ class VMGetHandler extends GetxController{
 
 
   // ---- Search Post ----
-  Future<List<Post>> searchPostDB() async{
-    print("들어와?");
-    
+  searchPostDB() async{
     posts = await handler.queryPost();
-    // posts.forEach((element) {
-    //   day1.add(element.day1);
-    //   day2.add(element.day2);
-    //   location.add(element.location);
-    // });
-
-    // update();
-    
-    return posts;
-
-    // return posts;
   }
 
   // ---- Delete Post ----
   deletePost(id) async{
-    print(id);
     await handler.deletePost(id);
-    update();
+    // posts = await handler.queryPost();
   }
 }

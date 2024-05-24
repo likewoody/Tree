@@ -1,14 +1,21 @@
 import 'package:get/get.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:td_app/model/write/writeModel.dart';
 import 'package:td_app/vm/database_handler.dart';
 
 class WriteVm extends GetxController {
   bool editingmode = false;
   String editingText = "수정하기";
+  String location = "";
+  String day1 = "";
+  String day2 = "";
+  String mate = "";
+  String weather = "";
+  String travelList = "";
+  var dbHandler = DatabaseHandler();
 
   insertWrite(String loc, String day1, String day2, String mate, String weather,
       String list) async {
-    var dbHandler = DatabaseHandler();
     // await dbHandler.createWriteTable();
     await dbHandler.insertWrite(WriteModel(
         location: loc,
@@ -17,6 +24,19 @@ class WriteVm extends GetxController {
         mate: mate,
         weather: weather,
         travelList: list));
+  }
+
+  detailView() async {
+    final selectDB = await dbHandler.queryWrite();
+    selectDB.forEach((element) {
+      location = element.location;
+      day1 = element.day1;
+      day2 = element.day2;
+      mate = element.mate;
+      weather = element.weather;
+      travelList = element.travelList;
+    });
+    update();
   }
 
   editingMode() {

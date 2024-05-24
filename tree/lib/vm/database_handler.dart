@@ -21,7 +21,6 @@ class DatabaseHandler {
     );
   }
 
-
   // ---- User ----
   Future<List<User>> queryUser(User user) async {
     // print("check database handler ㅣ이ㅣ이이이 ${user.email} 이메일 그리고 ${user.password} 패스워드 체크 ");
@@ -67,13 +66,11 @@ class DatabaseHandler {
         [code]);
   }
 
-
-
   // ---- Post ----
   Future<List<Post>> queryPost() async {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.rawQuery(
-        'select * from write',
+      'select * from write',
     );
     // 맵 형식인 result를 List로 변환하여 card로 사용한다.
     return queryResult.map((e) => Post.fromMap(e)).toList();
@@ -120,10 +117,10 @@ class DatabaseHandler {
     return result;
   }
 
-  // queryWrite() async {
-  //   final Database db = await initializeDB();
-  //   final queryResult = await db.rawQuery('select * from write where id = 1');
-  //   // 맵 형식인 result를 List로 변환하여 card로 사용한다.
-  //   print(queryResult);
-  // }
+  Future<List<WriteModel>> queryWrite() async {
+    final Database db = await initializeDB();
+    final List<Map<String, dynamic>> queryResult =
+        await db.rawQuery('select * from write where id = 1');
+    return queryResult.map((e) => WriteModel.fromMap(e)).toList();
+  }
 }

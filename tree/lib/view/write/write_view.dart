@@ -12,6 +12,7 @@ class WriteView extends StatelessWidget {
   final TextEditingController travelMateController = TextEditingController();
   final TextEditingController weatherController = TextEditingController();
   final TextEditingController writeController = TextEditingController();
+
   bool editmode = false;
   String editText = "수정하기";
 
@@ -19,13 +20,14 @@ class WriteView extends StatelessWidget {
   Widget build(BuildContext context) {
     final box = GetStorage();
     final userid = box.read('postId');
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text('detail view'),
       ),
       body: Center(
         child: GetBuilder<WriteVm>(builder: (controller) {
+          initPage(controller);
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -147,5 +149,17 @@ class WriteView extends StatelessWidget {
     controller.editingText = editText;
     controller.editingmode = editmode;
     controller.editingMode();
+  }
+
+  initPage(WriteVm controller) {
+    controller.detailView();
+    travelPlaceController.text = controller.location;
+    day1Controller.text = controller.day1;
+    day2Controller.text = controller.day2;
+    travelMateController.text = controller.mate;
+    weatherController.text = controller.weather;
+
+    var write = controller.travelList.replaceAll('/../', '\n');
+    writeController.text = write;
   }
 }

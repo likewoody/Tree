@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:td_app/vm/wrire/write_vm.dart';
 
@@ -24,12 +25,20 @@ class WriteView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('detail view'),
+        actions: [
+          GetBuilder<WriteVm>(builder: (controller) {
+            return TextButton(
+                onPressed: () {
+                  controller.editingMode();
+                },
+                child: Text(controller.editingText));
+          })
+        ],
       ),
-      body: Center(
-        child: GetBuilder<WriteVm>(builder: (controller) {
-          initPage(controller);
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: GetBuilder<WriteVm>(builder: (controller) {
+        initPage(controller);
+        return SingleChildScrollView(
+          child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -102,46 +111,35 @@ class WriteView extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    IconButton(
-                        onPressed: () {}, icon: Icon(Icons.arrow_back_ios)),
-                    Container(
-                      width: 280,
-                      foregroundDecoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  controller.editingMode();
-                                },
-                                child: Text(controller.editingText),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: 200,
-                            child: TextField(
-                              controller: writeController,
-                              maxLines: 10,
+                    Expanded(
+                      // Row 또는 Column이 자식으로 해당될 때 가능한 모든 여유 공간을 차지하게 해주는 위젯
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: IntrinsicHeight(
+                          //자식 위젯의 내재된 높이를 계산하고, 그 높이에 맞춰 자신의 높이를 조절
+                          child: TextField(
+                            controller: writeController,
+                            maxLines: null,
+                            expands: true,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(8.0),
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                    IconButton(
-                        onPressed: () {}, icon: Icon(Icons.arrow_forward_ios)),
                   ],
                 ),
               ),
             ],
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 
@@ -159,7 +157,23 @@ class WriteView extends StatelessWidget {
     travelMateController.text = controller.mate;
     weatherController.text = controller.weather;
 
-    var write = controller.travelList.replaceAll('/../', '\n');
-    writeController.text = write;
+    //db에 저장되어 있는 travelList를 재정렬 하기 위해 formatTravelList함수 사용
+    String formattedTravelList = formatTravelList(controller.travelList);
+    writeController.text = formattedTravelList;
+  }
+
+  String formatTravelList(String travelList) {
+    // '/../'을 기준으로 나눠 travelItems에 저장
+    List<String> travelItems = travelList.split('/../');
+    int dayCnt = 1;
+    StringBuffer formattedList = StringBuffer();
+
+    for (String item in travelItems) {
+      //formattedList 작성
+      formattedList.write('$dayCnt일차 \n$item\n\n');
+      dayCnt++;
+    }
+
+    return formattedList.toString();
   }
 }

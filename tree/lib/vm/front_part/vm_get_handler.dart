@@ -118,7 +118,9 @@ class VMGetHandler extends GetxController{
     //   location.add(element.location);
     // });
 
-    // update();
+    update();
+    print("업데이트 실행ㅎ");
+    
     return posts;
 
     // return posts;

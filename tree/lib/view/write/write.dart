@@ -333,8 +333,7 @@ class _WriteState extends State<Write> {
                       travelMateController.text,
                       weatherController.text,
                       stringWriteList);
-                  print(stringWriteList);
-                  // Get.offAll(const CommonTabbar());
+                  Get.offAll(const CommonTabbar());
                 },
                 child: Text("업로드 하기"),
               ),

@@ -109,6 +109,7 @@ class VMGetHandler extends GetxController{
 
   // ---- Search Post ----
   searchPostDB() async{
+    print("get test");
     posts = await handler.queryPost();
   }
 

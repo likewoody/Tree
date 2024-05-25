@@ -36,7 +36,7 @@ class _CommonTabbarState extends State<CommonTabbar> with SingleTickerProviderSt
         physics: const NeverScrollableScrollPhysics(),
         controller: tabController,
         children: [
-          PostPage(),
+          const PostPage(),
           Setting()
         ]
       ),

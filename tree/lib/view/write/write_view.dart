@@ -20,7 +20,7 @@ class WriteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final box = GetStorage();
-    final userid = box.read('postId');
+    final postId = box.read('postId');
 
     return Scaffold(
       appBar: AppBar(
@@ -36,6 +36,7 @@ class WriteView extends StatelessWidget {
         ],
       ),
       body: GetBuilder<WriteVm>(builder: (controller) {
+        controller.postId = postId;
         initPage(controller);
         return SingleChildScrollView(
           child: Column(

@@ -12,6 +12,7 @@ class WriteVm extends GetxController {
   String mate = "";
   String weather = "";
   String travelList = "";
+  int postId = 0;
   var dbHandler = DatabaseHandler();
 
   insertWrite(String loc, String day1, String day2, String mate, String weather,
@@ -27,7 +28,7 @@ class WriteVm extends GetxController {
   }
 
   detailView() async {
-    final selectDB = await dbHandler.queryWrite();
+    final selectDB = await dbHandler.queryWrite(postId);
     selectDB.forEach((element) {
       location = element.location;
       day1 = element.day1;

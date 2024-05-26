@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:td_app/view/common/appbar.dart';
 import 'package:td_app/view/post/detail.dart';
 import 'package:td_app/view/write/write.dart';
+import 'package:td_app/view/write/write_view.dart';
 import 'package:td_app/vm/front_part/vm_get_handler.dart';
 
 class PostPage extends StatefulWidget {
@@ -15,7 +16,6 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-
   late VMGetHandler controller;
 
   @override
@@ -25,37 +25,32 @@ class _PostPageState extends State<PostPage> {
     controller = VMGetHandler();
     initData();
   }
-  
 
-  initData() async{
+  initData() async {
     await controller.searchPostDB();
     setState(() {});
   }
 
-
-  selectDelete(index) async{
+  selectDelete(index) async {
     await controller.deletePost(controller.posts[index].id);
     initData();
   }
 
   // ---- View ----
-  Widget bodyView(){
-    return InkWell (
+  Widget bodyView() {
+    return InkWell(
       child: ListView.builder(
         itemCount: controller.posts.length,
         itemBuilder: (context, index) {
           return Slidable(
-            endActionPane: ActionPane(
-              motion: const BehindMotion(), 
-              children: [
-                SlidableAction(
-                  backgroundColor: Colors.red,
-                  icon: Icons.delete,
-                  label: '삭제',
-                  onPressed: (context) => selectDelete(index),
-                )
-              ]
-            ),
+            endActionPane: ActionPane(motion: const BehindMotion(), children: [
+              SlidableAction(
+                backgroundColor: Colors.red,
+                icon: Icons.delete,
+                label: '삭제',
+                onPressed: (context) => selectDelete(index),
+              )
+            ]),
             child: SizedBox(
               height: 120,
               child: Padding(
@@ -64,35 +59,33 @@ class _PostPageState extends State<PostPage> {
                   onTap: () {
                     final box = GetStorage();
                     box.write("postId", controller.posts[index].id);
-                    Get.to(Detail());
+                    Get.to(WriteView());
                   },
                   child: Card(
                     child: Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(40,0,0,0),
+                          padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 controller.posts[index].day1,
-                                style: const TextStyle(
-                                  fontSize: 14
-                                ),
+                                style: const TextStyle(fontSize: 14),
                               ),
-                              const Text("~", style: TextStyle(fontSize: 12),),
+                              const Text(
+                                "~",
+                                style: TextStyle(fontSize: 12),
+                              ),
                               Text(
                                 controller.posts[index].day2,
-                                style: const TextStyle(
-                                  fontSize: 14
-                                ),
+                                style: const TextStyle(fontSize: 14),
                               ),
                             ],
                           ),
                         ),
-                        
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(30,0,0,0),
+                          padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
                           child: Text(
                             controller.posts[index].location,
                             style: const TextStyle(
@@ -116,12 +109,11 @@ class _PostPageState extends State<PostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(80), 
-        child: CommonAppbar()
-      ),
+          preferredSize: Size.fromHeight(80), child: CommonAppbar()),
       body: bodyView(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.to(const Write())!.then((value) => controller.searchPostDB()),
+        onPressed: () =>
+            Get.to(const Write())!.then((value) => controller.searchPostDB()),
         child: const Icon(Icons.add),
         backgroundColor: Colors.green[50],
       ),

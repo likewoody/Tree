@@ -117,10 +117,10 @@ class DatabaseHandler {
     return result;
   }
 
-  Future<List<WriteModel>> queryWrite() async {
+  Future<List<WriteModel>> queryWrite(int postId) async {
     final Database db = await initializeDB();
     final List<Map<String, dynamic>> queryResult =
-        await db.rawQuery('select * from write where id = 1');
+        await db.rawQuery('select * from write where id = ${postId}');
     return queryResult.map((e) => WriteModel.fromMap(e)).toList();
   }
 }

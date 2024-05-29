@@ -3,9 +3,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:td_app/view/common/appbar.dart';
 import 'package:td_app/view/login/login.dart';
-import 'package:td_app/view/setting/enquire.dart';
-import 'package:td_app/view/setting/enquireList.dart';
-import 'package:td_app/view/setting/setting_nickname.dart';
 import 'package:td_app/view/setting/setting_password.dart';
 import 'package:td_app/vm/front_part/vm_get_handler.dart';
 
@@ -117,25 +114,25 @@ class Setting extends StatelessWidget {
           ],
         ),
 
-        // 닉네임 설정
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20,5,0,5),
-              child: Text('닉네임 설정'),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,5,15,5),
-              child : IconButton (
-                onPressed: () async { 
-                  await Get.to(SetNickname());
-                },
-                icon:const  Icon(Icons.arrow_forward_ios)
-              ),
-            ),
-          ],
-        ),
+        // // 닉네임 설정
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     const Padding(
+        //       padding: EdgeInsets.fromLTRB(20,5,0,5),
+        //       child: Text('닉네임 설정'),
+        //     ),
+        //     Padding(
+        //       padding: const EdgeInsets.fromLTRB(0,5,15,5),
+        //       child : IconButton (
+        //         onPressed: () async { 
+        //           await Get.to(SetNickname());
+        //         },
+        //         icon:const  Icon(Icons.arrow_forward_ios)
+        //       ),
+        //     ),
+        //   ],
+        // ),
 
         // 비밀번호 설정 
         Row(
@@ -178,74 +175,74 @@ class Setting extends StatelessWidget {
             ),
           ],
         ),
-        // 문의하기
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20,5,0,5),
-              child: Text('문의하기'),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,5,15,5),
-              child: IconButton(
-                onPressed: () => Get.to(
-                  // null
-                  Enquire()
-                ), 
-                icon:const  Icon(Icons.arrow_forward_ios)
-              ),
-            ),
-          ],
-        ),
-        // 문의내역
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20,5,0,5),
-              child: Text('문의내역'),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,5,15,5),
-              child: IconButton(
-                onPressed: () => Get.to(
-                  // null
-                  EnquireList()
-                ), 
-                icon:const  Icon(Icons.arrow_forward_ios)
-              ),
-            ),
-          ],
-        ),
+        // // 문의하기
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     const Padding(
+        //       padding: EdgeInsets.fromLTRB(20,5,0,5),
+        //       child: Text('문의하기'),
+        //     ),
+        //     Padding(
+        //       padding: const EdgeInsets.fromLTRB(0,5,15,5),
+        //       child: IconButton(
+        //         onPressed: () => Get.to(
+        //           // null
+        //           Enquire()
+        //         ), 
+        //         icon:const  Icon(Icons.arrow_forward_ios)
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        // // 문의내역
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     const Padding(
+        //       padding: EdgeInsets.fromLTRB(20,5,0,5),
+        //       child: Text('문의내역'),
+        //     ),
+        //     Padding(
+        //       padding: const EdgeInsets.fromLTRB(0,5,15,5),
+        //       child: IconButton(
+        //         onPressed: () => Get.to(
+        //           // null
+        //           EnquireList()
+        //         ), 
+        //         icon:const  Icon(Icons.arrow_forward_ios)
+        //       ),
+        //     ),
+        //   ],
+        // ),
 
 
-        // 버전정보
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(20,5,0,5),
-              child: Text('버전정보'),
-            ),
-          ],
-        ),
+        // // 버전정보
+        // const Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     Padding(
+        //       padding: EdgeInsets.fromLTRB(20,5,0,5),
+        //       child: Text('버전정보'),
+        //     ),
+        //   ],
+        // ),
 
 
-        const Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(20,0,0,5),
-              child: Text(
-                '현재 1.0.0 / 최신 1.0.0',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey
-                ),
-              ),
-            ),
-          ],
-        ),
+        // const Row(
+        //   children: [
+        //     Padding(
+        //       padding: EdgeInsets.fromLTRB(20,0,0,5),
+        //       child: Text(
+        //         '현재 1.0.0 / 최신 1.0.0',
+        //         style: TextStyle(
+        //           fontSize: 12,
+        //           color: Colors.grey
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
 
 
         // 서비스 이용약관

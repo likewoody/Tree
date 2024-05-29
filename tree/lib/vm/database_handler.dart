@@ -99,10 +99,9 @@ class DatabaseHandler {
   //   );
   // }
 
-  Future<int> insertWrite(WriteModel writeModel) async {
-    int result = 0;
+  Future<void> insertWrite(WriteModel writeModel) async {
     final Database db = await initializeDB();
-    result = await db.rawInsert(
+    await db.rawInsert(
       'insert into write(location,day1,day2,mate,weather,travelList) values(?,?,?,?,?,?)',
       // ?에 값 넣기
       [
@@ -114,7 +113,23 @@ class DatabaseHandler {
         writeModel.travelList,
       ],
     );
-    return result;
+  }
+
+  Future<void> updatetWrite(WriteModel writeModel, int postId) async {
+    final Database db = await initializeDB();
+    await db.rawInsert(
+      'update write set location=?,day1=?,day2=?,mate=?,weather=?,travelList=? where id = ?',
+      // ?에 값 넣기
+      [
+        writeModel.location,
+        writeModel.day1,
+        writeModel.day2,
+        writeModel.mate,
+        writeModel.weather,
+        writeModel.travelList,
+        postId
+      ],
+    );
   }
 
   Future<List<WriteModel>> queryWrite(int postId) async {

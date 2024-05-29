@@ -13,14 +13,14 @@ class WriteView extends StatelessWidget {
   final TextEditingController travelMateController = TextEditingController();
   final TextEditingController weatherController = TextEditingController();
   final TextEditingController writeController = TextEditingController();
-
-  bool editmode = false;
-  String editText = "수정하기";
+  final WriteVm controller = WriteVm();
 
   @override
   Widget build(BuildContext context) {
     final box = GetStorage();
     final postId = box.read('postId');
+    controller.postId = postId;
+    initPage(controller);
 
     return Scaffold(
       appBar: AppBar(
@@ -28,16 +28,15 @@ class WriteView extends StatelessWidget {
         actions: [
           GetBuilder<WriteVm>(builder: (controller) {
             return TextButton(
-                onPressed: () {
-                  controller.editingMode();
-                },
-                child: Text(controller.editingText));
+              onPressed: () {
+                editingModeChange(controller);
+              },
+              child: Text(controller.editingText),
+            );
           })
         ],
       ),
       body: GetBuilder<WriteVm>(builder: (controller) {
-        controller.postId = postId;
-        initPage(controller);
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -113,7 +112,6 @@ class WriteView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
-                      // Row 또는 Column이 자식으로 해당될 때 가능한 모든 여유 공간을 차지하게 해주는 위젯
                       child: Container(
                         padding: EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
@@ -121,9 +119,9 @@ class WriteView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: IntrinsicHeight(
-                          //자식 위젯의 내재된 높이를 계산하고, 그 높이에 맞춰 자신의 높이를 조절
                           child: TextField(
                             controller: writeController,
+                            readOnly: !controller.editingmode,
                             maxLines: null,
                             expands: true,
                             decoration: InputDecoration(
@@ -137,6 +135,19 @@ class WriteView extends StatelessWidget {
                   ],
                 ),
               ),
+              ElevatedButton(
+                  onPressed: () async {
+                    var loc = travelPlaceController.text;
+                    var day1 = day1Controller.text;
+                    var day2 = day2Controller.text;
+                    var mate = travelMateController.text;
+                    var weather = weatherController.text;
+                    var list = writeController.text;
+                    controller.postId = postId;
+                    await controller.updateWrite(
+                        loc, day1, day2, mate, weather, list);
+                  },
+                  child: Text('수정제발'))
             ],
           ),
         );
@@ -144,33 +155,29 @@ class WriteView extends StatelessWidget {
     );
   }
 
-  editingModeChange(WriteVm controller) {
-    controller.editingText = editText;
-    controller.editingmode = editmode;
+  void editingModeChange(WriteVm controller) {
     controller.editingMode();
   }
 
-  initPage(WriteVm controller) {
-    controller.detailView();
+  void initPage(WriteVm controller) async {
+    await controller.detailView();
+
     travelPlaceController.text = controller.location;
     day1Controller.text = controller.day1;
     day2Controller.text = controller.day2;
     travelMateController.text = controller.mate;
     weatherController.text = controller.weather;
 
-    //db에 저장되어 있는 travelList를 재정렬 하기 위해 formatTravelList함수 사용
     String formattedTravelList = formatTravelList(controller.travelList);
     writeController.text = formattedTravelList;
   }
 
   String formatTravelList(String travelList) {
-    // '/../'을 기준으로 나눠 travelItems에 저장
     List<String> travelItems = travelList.split('/../');
     int dayCnt = 1;
     StringBuffer formattedList = StringBuffer();
 
     for (String item in travelItems) {
-      //formattedList 작성
       formattedList.write('$dayCnt일차 \n$item\n\n');
       dayCnt++;
     }

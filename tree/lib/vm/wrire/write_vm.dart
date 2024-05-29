@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:td_app/model/write/writeModel.dart';
 import 'package:td_app/vm/database_handler.dart';
 
@@ -40,9 +39,30 @@ class WriteVm extends GetxController {
     update();
   }
 
+  updateWrite(String loc, String day1, String day2, String mate, String weather,
+      String list) async {
+    await dbHandler.updatetWrite(
+        WriteModel(
+          location: loc,
+          day1: day1,
+          day2: day2,
+          mate: mate,
+          weather: weather,
+          travelList: list,
+        ),
+        postId);
+
+    update();
+  }
+
   editingMode() {
+    if (editingmode) {
+      Get.snackbar('수정 모드에 진입하였습니다.', '수정을 진행해주세요');
+      editingText = '수정완료';
+    } else {
+      editingText = '수정하기';
+    }
     editingmode = !editingmode;
-    editingText = editingmode ? '수정완료' : '수정하기';
     update();
   }
 }

@@ -25,14 +25,29 @@ class WriteView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('detail view'),
+        leading: IconButton(
+            onPressed: () async {
+              var loc = travelPlaceController.text;
+              var day1 = day1Controller.text;
+              var day2 = day2Controller.text;
+              var mate = travelMateController.text;
+              var weather = weatherController.text;
+              var list = writeController.text;
+              controller.postId = postId;
+              await controller.updateWrite(
+                  loc, day1, day2, mate, weather, list);
+              initPage(controller);
+              Get.back();
+            },
+            icon: Icon(Icons.arrow_back_ios)),
         actions: [
           GetBuilder<WriteVm>(builder: (controller) {
             return TextButton(
-              onPressed: () {
-                editingModeChange(controller);
-              },
-              child: Text(controller.editingText),
-            );
+                onPressed: () {
+                  controller.editingMode();
+                  print(controller.editingmode);
+                },
+                child: Text('수정하기'));
           })
         ],
       ),
@@ -50,6 +65,7 @@ class WriteView extends StatelessWidget {
                       width: 200,
                       child: TextField(
                         controller: travelPlaceController,
+                        readOnly: controller.editingmode,
                       ),
                     ),
                   ],
@@ -64,6 +80,7 @@ class WriteView extends StatelessWidget {
                       width: 100,
                       child: TextField(
                         controller: day1Controller,
+                        readOnly: controller.editingmode,
                       ),
                     ),
                     Text("~"),
@@ -71,6 +88,7 @@ class WriteView extends StatelessWidget {
                       width: 100,
                       child: TextField(
                         controller: day2Controller,
+                        readOnly: controller.editingmode,
                       ),
                     ),
                   ],
@@ -86,6 +104,7 @@ class WriteView extends StatelessWidget {
                       width: 200,
                       child: TextField(
                         controller: travelMateController,
+                        readOnly: controller.editingmode,
                       ),
                     ),
                   ],
@@ -101,6 +120,7 @@ class WriteView extends StatelessWidget {
                       width: 200,
                       child: TextField(
                         controller: weatherController,
+                        readOnly: controller.editingmode,
                       ),
                     ),
                   ],
@@ -121,7 +141,7 @@ class WriteView extends StatelessWidget {
                         child: IntrinsicHeight(
                           child: TextField(
                             controller: writeController,
-                            readOnly: !controller.editingmode,
+                            readOnly: controller.editingmode,
                             maxLines: null,
                             expands: true,
                             decoration: InputDecoration(
@@ -135,19 +155,6 @@ class WriteView extends StatelessWidget {
                   ],
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () async {
-                    var loc = travelPlaceController.text;
-                    var day1 = day1Controller.text;
-                    var day2 = day2Controller.text;
-                    var mate = travelMateController.text;
-                    var weather = weatherController.text;
-                    var list = writeController.text;
-                    controller.postId = postId;
-                    await controller.updateWrite(
-                        loc, day1, day2, mate, weather, list);
-                  },
-                  child: Text('수정제발'))
             ],
           ),
         );
@@ -155,11 +162,10 @@ class WriteView extends StatelessWidget {
     );
   }
 
-  void editingModeChange(WriteVm controller) {
-    controller.editingMode();
-  }
-
   void initPage(WriteVm controller) async {
+    controller.editingmode = true;
+    print(controller.editingmode);
+
     await controller.detailView();
 
     travelPlaceController.text = controller.location;
@@ -177,8 +183,14 @@ class WriteView extends StatelessWidget {
     int dayCnt = 1;
     StringBuffer formattedList = StringBuffer();
 
-    for (String item in travelItems) {
-      formattedList.write('$dayCnt일차 \n$item\n\n');
+    for (int i = 0; i < travelItems.length; i++) {
+      String item = travelItems[i];
+      if (i == travelItems.length - 1) {
+        // 마지막 아이템일 때
+        formattedList.write('$dayCnt일차 \n$item');
+      } else {
+        formattedList.write('$dayCnt일차 \n$item\n\n');
+      }
       dayCnt++;
     }
 

@@ -59,7 +59,7 @@ class _PostPageState extends State<PostPage> {
                   onTap: () {
                     final box = GetStorage();
                     box.write("postId", controller.posts[index].id);
-                    Get.to(WriteView());
+                    Get.to(WriteView())!.then((value) => initData());
                   },
                   child: Card(
                     child: Row(

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:td_app/view/common/appbar.dart';
 import 'package:td_app/view/common/tabbar.dart';
 import 'package:td_app/view/write/write_view.dart';
 import 'package:td_app/vm/wrire/write_vm.dart';
@@ -20,8 +22,8 @@ class _WriteState extends State<Write> {
   late TextEditingController weatherController;
   late TextEditingController writeController;
   late List<String> writeList;
-  late int day1Select;
-  late int day2Select;
+  late DateTime day1Select;
+  late DateTime day2Select;
   late int travelDay;
   late int dayCnt;
   late bool dayisSelect;
@@ -36,11 +38,8 @@ class _WriteState extends State<Write> {
     weatherController = TextEditingController();
     writeController = TextEditingController();
     writeList = [""];
-    day1Select = int.parse(
-        '${DateTime.now().year % 100}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().day.toString().padLeft(2, '0')}');
-    day2Select = int.parse(
-        '${DateTime.now().year % 100}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().day.toString().padLeft(2, '0')}');
-    ;
+    day1Select = DateTime.now();
+    day2Select = DateTime.now();
     travelDay = 0;
     dayCnt = 0;
     dayisSelect = false;
@@ -79,9 +78,8 @@ class _WriteState extends State<Write> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("write page test!!!!"),
-      ),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80), child: CommonAppbar()),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -141,8 +139,7 @@ class _WriteState extends State<Write> {
                                         mode: CupertinoDatePickerMode.date,
                                         onDateTimeChanged: (value) {
                                           setState(() {
-                                            day1Select = int.parse(
-                                                '${value.year % 100}${value.month.toString().padLeft(2, '0')}${value.day.toString().padLeft(2, '0')}');
+                                            day1Select = value;
                                           });
                                         },
                                       ),
@@ -186,8 +183,7 @@ class _WriteState extends State<Write> {
                                         mode: CupertinoDatePickerMode.date,
                                         onDateTimeChanged: (value) {
                                           setState(() {
-                                            day2Select = int.parse(
-                                                '${value.year % 100}${value.month.toString().padLeft(2, '0')}${value.day.toString().padLeft(2, '0')}');
+                                            day2Select = value;
                                           });
                                         },
                                       ),
@@ -338,7 +334,9 @@ class _WriteState extends State<Write> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    Get.to(WriteView());
+                    print(day1Select);
+                    print(day2Select);
+                    print(travelDay);
                   },
                   child: Text('view이동'))
             ],
@@ -356,8 +354,12 @@ class _WriteState extends State<Write> {
     }
   }
 
+  DateTime dateWithoutTime(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
+  }
+
   alertDateSelect() {
-    if (day2Select < day1Select) {
+    if (dateWithoutTime(day2Select).isBefore(dateWithoutTime(day1Select))) {
       Get.defaultDialog(
         barrierDismissible: false,
         title: "경고",
@@ -376,20 +378,17 @@ class _WriteState extends State<Write> {
         ),
       );
       day2Controller.text = "";
+    } else if (dateWithoutTime(day1Select)
+        .isAtSameMomentAs(dateWithoutTime(day2Select))) {
+      travelDay = 0;
     } else {
-      if (day1Select == day2Select) {
-        travelDay = 0;
-      } else {
-        travelDay = day2Select - day1Select;
-      }
+      travelDay = dateWithoutTime(day2Select)
+          .difference(dateWithoutTime(day1Select))
+          .inDays; // 일 수 차이 계산
     }
   }
 
-  changeDayText(int daySelect) {
-    var year = daySelect.toString().substring(0, 2);
-    var month = daySelect.toString().substring(2, 4);
-    var day = daySelect.toString().substring(4, 6);
-
-    return "${year}-${month}-${day}";
+  String changeDayText(DateTime date) {
+    return DateFormat('yy-MM-dd').format(date);
   }
 }

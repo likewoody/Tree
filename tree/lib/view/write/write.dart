@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:td_app/view/common/tabbar.dart';
-import 'package:td_app/view/tabbar/post_page.dart';
 import 'package:td_app/view/write/write_view.dart';
 import 'package:td_app/vm/wrire/write_vm.dart';
 
@@ -37,7 +36,7 @@ class _WriteState extends State<Write> {
     weatherController = TextEditingController();
     writeController = TextEditingController();
     writeList = [""];
-    day1Select = day1Select = int.parse(
+    day1Select = int.parse(
         '${DateTime.now().year % 100}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().day.toString().padLeft(2, '0')}');
     day2Select = int.parse(
         '${DateTime.now().year % 100}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().day.toString().padLeft(2, '0')}');

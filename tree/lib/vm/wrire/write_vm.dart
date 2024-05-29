@@ -3,8 +3,7 @@ import 'package:td_app/model/write/writeModel.dart';
 import 'package:td_app/vm/database_handler.dart';
 
 class WriteVm extends GetxController {
-  bool editingmode = false;
-  String editingText = "수정하기";
+  bool editingmode = true;
   String location = "";
   String day1 = "";
   String day2 = "";
@@ -56,13 +55,7 @@ class WriteVm extends GetxController {
   }
 
   editingMode() {
-    if (editingmode) {
-      Get.snackbar('수정 모드에 진입하였습니다.', '수정을 진행해주세요');
-      editingText = '수정완료';
-    } else {
-      editingText = '수정하기';
-    }
-    editingmode = !editingmode;
+    editingmode = false;
     update();
   }
 }

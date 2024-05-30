@@ -3,14 +3,15 @@ import 'package:td_app/model/write/writeModel.dart';
 import 'package:td_app/vm/database_handler.dart';
 
 class WriteVm extends GetxController {
-  bool editingmode = true;
   String location = "";
   String day1 = "";
   String day2 = "";
   String mate = "";
   String weather = "";
   String travelList = "";
+  int dayCnt = 0;
   int postId = 0;
+  List<String> writeList = [];
   var dbHandler = DatabaseHandler();
 
   insertWrite(String loc, String day1, String day2, String mate, String weather,
@@ -38,6 +39,10 @@ class WriteVm extends GetxController {
     update();
   }
 
+  deletePost() async {
+    await dbHandler.deletePost(postId);
+  }
+
   updateWrite(String loc, String day1, String day2, String mate, String weather,
       String list) async {
     await dbHandler.updatetWrite(
@@ -54,8 +59,22 @@ class WriteVm extends GetxController {
     update();
   }
 
-  editingMode() {
-    editingmode = false;
+  viewWrite() {
+    travelList = writeList[dayCnt];
+    update();
+  }
+
+  addCnt() {
+    if (dayCnt < writeList.length - 1) {
+      dayCnt++;
+    }
+    update();
+  }
+
+  removeCnt() {
+    if (dayCnt > 0) {
+      dayCnt--;
+    }
     update();
   }
 }

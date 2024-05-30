@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:td_app/view/write/editWrite.dart';
 import 'package:td_app/vm/wrire/write_vm.dart';
 
 class WriteView extends StatelessWidget {
@@ -13,187 +13,179 @@ class WriteView extends StatelessWidget {
   final TextEditingController travelMateController = TextEditingController();
   final TextEditingController weatherController = TextEditingController();
   final TextEditingController writeController = TextEditingController();
-  final WriteVm controller = WriteVm();
+  late String travelPlace = "";
+  late String day1 = "";
+  late String day2 = "";
+  late String travelMate = "";
+  late String weather = "";
+  late List<String> travelItems = [];
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
     final postId = box.read('postId');
-    controller.postId = postId;
-    initPage(controller);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('detail view'),
-        leading: IconButton(
-            onPressed: () async {
-              var loc = travelPlaceController.text;
-              var day1 = day1Controller.text;
-              var day2 = day2Controller.text;
-              var mate = travelMateController.text;
-              var weather = weatherController.text;
-              var list = writeController.text;
-              controller.postId = postId;
-              await controller.updateWrite(
-                  loc, day1, day2, mate, weather, list);
-              initPage(controller);
-              Get.back();
-            },
-            icon: Icon(Icons.arrow_back_ios)),
-        actions: [
-          GetBuilder<WriteVm>(builder: (controller) {
-            return TextButton(
+    return GetBuilder<WriteVm>(builder: (controller) {
+      controller.detailView();
+      controller.postId = postId;
+      initPage(controller);
+
+      return Scaffold(
+          appBar: AppBar(
+            title: Text('detail view'),
+            leading: IconButton(
                 onPressed: () {
-                  controller.editingMode();
-                  print(controller.editingmode);
+                  controller.dayCnt = 0;
+                  Get.back();
                 },
-                child: Text('수정하기'));
-          })
-        ],
-      ),
-      body: GetBuilder<WriteVm>(builder: (controller) {
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('여행지 : '),
-                    Container(
-                      width: 200,
-                      child: TextField(
-                        controller: travelPlaceController,
-                        readOnly: controller.editingmode,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 100,
-                      child: TextField(
-                        controller: day1Controller,
-                        readOnly: controller.editingmode,
-                      ),
-                    ),
-                    Text("~"),
-                    Container(
-                      width: 100,
-                      child: TextField(
-                        controller: day2Controller,
-                        readOnly: controller.editingmode,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('여행 메이트 : '),
-                    Container(
-                      width: 200,
-                      child: TextField(
-                        controller: travelMateController,
-                        readOnly: controller.editingmode,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('날씨 : '),
-                    Container(
-                      width: 200,
-                      child: TextField(
-                        controller: weatherController,
-                        readOnly: controller.editingmode,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: IntrinsicHeight(
-                          child: TextField(
-                            controller: writeController,
-                            readOnly: controller.editingmode,
-                            maxLines: null,
-                            expands: true,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.all(8.0),
+                icon: Icon(Icons.arrow_back_ios)),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Get.bottomSheet(
+                        backgroundColor: Colors.white,
+                        SizedBox(
+                          width: 500,
+                          height: 200,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Get.defaultDialog(
+                                          title: '삭제하시겠습니까?',
+                                          middleText: '삭제한 게시물은 복구할 수 없습니다.',
+                                          actions: [
+                                            Center(
+                                              child: Row(
+                                                children: [
+                                                  ElevatedButton(
+                                                      onPressed: () {
+                                                        controller.deletePost();
+                                                        Get.back();
+                                                        Get.back();
+                                                        Get.back();
+                                                      },
+                                                      child: Text('네')),
+                                                  ElevatedButton(
+                                                      onPressed: () {
+                                                        Get.back();
+                                                        Get.back();
+                                                      },
+                                                      child: Text('아니요')),
+                                                ],
+                                              ),
+                                            )
+                                          ]);
+                                    },
+                                    child: Text(
+                                      '삭제',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Get.to(EditWrite());
+                                    },
+                                    child: Text(
+                                      '수정',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                        ));
+                  },
+                  icon: Icon(Icons.menu))
             ],
           ),
-        );
-      }),
-    );
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text('여행지 : ${travelPlace}'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('여행 날짜 : '),
+                    Text(day1),
+                    Text('  ~  '),
+                    Text(day2),
+                  ],
+                ),
+                Text('여행 메이트 : ${travelMate}'),
+                Text('날씨 : ${weather}'),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                    width: 300,
+                    foregroundDecoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Column(
+                      children: [
+                        Text("Day ${controller.dayCnt + 1}"),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: writeController,
+                                maxLines: 10,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          controller.removeCnt();
+                        },
+                        icon: Icon(Icons.arrow_back_ios)),
+                    IconButton(
+                        onPressed: () {
+                          controller.addCnt();
+                        },
+                        icon: Icon(Icons.arrow_forward_ios))
+                  ],
+                )
+              ],
+            ),
+          ));
+    });
   }
 
-  void initPage(WriteVm controller) async {
-    controller.editingmode = true;
-    print(controller.editingmode);
+  initPage(WriteVm controller) {
+    // controller.dayCnt = 0;
+    travelPlace = controller.location;
+    day1 = controller.day1;
+    day2 = controller.day2;
+    travelMate = controller.mate;
+    weather = controller.weather;
 
-    await controller.detailView();
-
-    travelPlaceController.text = controller.location;
-    day1Controller.text = controller.day1;
-    day2Controller.text = controller.day2;
-    travelMateController.text = controller.mate;
-    weatherController.text = controller.weather;
-
-    String formattedTravelList = formatTravelList(controller.travelList);
+    String dbWriteList = controller.travelList;
+    String formattedTravelList = formatTravelList(controller, dbWriteList);
     writeController.text = formattedTravelList;
   }
 
-  String formatTravelList(String travelList) {
-    List<String> travelItems = travelList.split('/../');
-    int dayCnt = 1;
-    StringBuffer formattedList = StringBuffer();
-
-    for (int i = 0; i < travelItems.length; i++) {
-      String item = travelItems[i];
-      if (i == travelItems.length - 1) {
-        // 마지막 아이템일 때
-        formattedList.write('$dayCnt일차 \n$item');
-      } else {
-        formattedList.write('$dayCnt일차 \n$item\n\n');
-      }
-      dayCnt++;
-    }
-
-    return formattedList.toString();
+  String formatTravelList(WriteVm controller, String travelList) {
+    travelItems = travelList.split('/../');
+    controller.writeList = travelItems;
+    return controller.writeList[controller.dayCnt];
   }
 }

@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
-import 'package:td_app/view/common/appbar.dart';
-import 'package:td_app/view/common/tabbar.dart';
 import 'package:td_app/vm/wrire/write_vm.dart';
 
-class Write extends StatefulWidget {
-  const Write({super.key});
+class EditWrite extends StatefulWidget {
+  const EditWrite({super.key});
 
   @override
-  State<Write> createState() => _WriteState();
+  State<EditWrite> createState() => _EditWriteState();
 }
 
-class _WriteState extends State<Write> {
+class _EditWriteState extends State<EditWrite> {
   late TextEditingController travelPlaceController;
   late TextEditingController day1Controller;
   late TextEditingController day2Controller;
@@ -26,6 +25,9 @@ class _WriteState extends State<Write> {
   late int travelDay;
   late int dayCnt;
   late bool dayisSelect;
+  late GetStorage box;
+  late int postId;
+  late WriteVm vm;
 
   @override
   void initState() {
@@ -41,6 +43,12 @@ class _WriteState extends State<Write> {
     day2Select = DateTime.now();
     travelDay = 0;
     dayCnt = 0;
+    dayisSelect = false;
+    box = GetStorage();
+    postId = box.read('postId');
+    vm = WriteVm();
+    vm.postId = postId;
+    printPost();
   }
 
   Widget dayWidget() {
@@ -76,8 +84,23 @@ class _WriteState extends State<Write> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80), child: CommonAppbar()),
+      appBar: AppBar(
+        title: Text('수정페이지'),
+        leading: IconButton(
+            onPressed: () {
+              backAlert();
+            },
+            icon: Icon(Icons.arrow_back_ios)),
+        actions: [
+          TextButton(
+            onPressed: () {
+              saveCurrentDayText();
+              updatePost(); // 버튼을 눌렀을 때 writeList 출력
+            },
+            child: Text('수정완료'),
+          )
+        ],
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -278,6 +301,7 @@ class _WriteState extends State<Write> {
                           ),
                         );
                       }
+                      print(writeList); // 버튼을 눌렀을 때 writeList 출력
                       setState(() {});
                     },
                     icon: Icon(Icons.arrow_back_ios),
@@ -310,31 +334,12 @@ class _WriteState extends State<Write> {
                           ),
                         );
                       }
+                      print(writeList); // 버튼을 눌렀을 때 writeList 출력
                       setState(() {});
                     },
                     icon: Icon(Icons.arrow_forward_ios),
                   ),
                 ],
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  saveCurrentDayText();
-                  var stringWriteList = "";
-                  stringWriteList = writeList.join('/../');
-                  var vm = WriteVm();
-                  vm.insertWrite(
-                      travelPlaceController.text,
-                      day1Controller.text,
-                      day2Controller.text,
-                      travelMateController.text,
-                      weatherController.text,
-                      stringWriteList);
-                  Get.offAll(const CommonTabbar());
-                },
-                child: Text("업로드 하기"),
               ),
             ],
           ),
@@ -387,5 +392,66 @@ class _WriteState extends State<Write> {
 
   String changeDayText(DateTime date) {
     return DateFormat('yy-MM-dd').format(date);
+  }
+
+  backAlert() {
+    Get.defaultDialog(
+        title: '작성중인 페이지를 나가시겠습니까?',
+        titleStyle: TextStyle(fontSize: 20),
+        middleText: '작성중인 페이지를 나가시겠습니까?\n나가기를 누르면 저장되지 않습니다.',
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    Get.back();
+                    Get.back();
+                    Get.back();
+                  },
+                  child: Text('나가기')),
+              ElevatedButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Text('계속 쓰기')),
+            ],
+          )
+        ]);
+  }
+
+  printPost() async {
+    await vm.detailView();
+    travelPlaceController.text = vm.location;
+    day1Controller.text = vm.day1;
+    day2Controller.text = vm.day2;
+    travelMateController.text = vm.mate;
+    weatherController.text = vm.weather;
+
+    String dbWriteList = vm.travelList;
+    String formattedTravelList = formatTravelList(dbWriteList);
+    writeController.text = formattedTravelList;
+    setState(() {});
+  }
+
+  String formatTravelList(String travelList) {
+    writeList = travelList.split('/../');
+    travelDay = writeList.length - 1;
+    return writeList[dayCnt];
+  }
+
+  updatePost() async {
+    var stringWriteList = "";
+    stringWriteList = writeList.join('/../');
+
+    var loc = travelPlaceController.text;
+    var day1 = day1Controller.text;
+    var day2 = day2Controller.text;
+    var mate = travelMateController.text;
+    var weather = weatherController.text;
+    vm.postId = postId;
+    await vm.updateWrite(loc, day1, day2, mate, weather, stringWriteList);
+    Get.back();
+    Get.back();
   }
 }

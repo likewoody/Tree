@@ -148,35 +148,6 @@ class _EditWriteState extends State<EditWrite> {
                                 border: OutlineInputBorder(),
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 10.0)),
-                            onTap: () {
-                              Get.defaultDialog(
-                                title: "날짜를 선택해주세요",
-                                content: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 200,
-                                      child: CupertinoDatePicker(
-                                        initialDateTime: DateTime.now(),
-                                        mode: CupertinoDatePickerMode.date,
-                                        onDateTimeChanged: (value) {
-                                          setState(() {
-                                            day1Select = value;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        day1Controller.text =
-                                            changeDayText(day1Select);
-                                        Get.back();
-                                      },
-                                      child: Text("선택"),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
                             controller: day1Controller,
                           ),
                         ),
@@ -192,37 +163,6 @@ class _EditWriteState extends State<EditWrite> {
                                 border: OutlineInputBorder(),
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 10.0)),
-                            onTap: () {
-                              Get.defaultDialog(
-                                title: "날짜를 선택해주세요",
-                                content: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 200,
-                                      child: CupertinoDatePicker(
-                                        initialDateTime: DateTime.now(),
-                                        mode: CupertinoDatePickerMode.date,
-                                        onDateTimeChanged: (value) {
-                                          setState(() {
-                                            day2Select = value;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        day2Controller.text =
-                                            changeDayText(day2Select);
-                                        Get.back();
-                                        alertDateSelect();
-                                        dayisSelect = true;
-                                      },
-                                      child: Text("선택"),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
                             controller: day2Controller,
                           ),
                         ),
@@ -361,33 +301,9 @@ class _EditWriteState extends State<EditWrite> {
   }
 
   alertDateSelect() {
-    if (dateWithoutTime(day2Select).isBefore(dateWithoutTime(day1Select))) {
-      Get.defaultDialog(
-        barrierDismissible: false,
-        title: "경고",
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text("날짜를 다시 선택해 주세요"),
-            SizedBox(height: 20), // 적절한 간격을 추가
-            TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: Text("OK"),
-            ),
-          ],
-        ),
-      );
-      day2Controller.text = "";
-    } else if (dateWithoutTime(day1Select)
-        .isAtSameMomentAs(dateWithoutTime(day2Select))) {
-      travelDay = 0;
-    } else {
-      travelDay = dateWithoutTime(day2Select)
-          .difference(dateWithoutTime(day1Select))
-          .inDays; // 일 수 차이 계산
-    }
+    travelDay = dateWithoutTime(day2Select)
+        .difference(dateWithoutTime(day1Select))
+        .inDays; // 일 수 차이 계산
   }
 
   String changeDayText(DateTime date) {

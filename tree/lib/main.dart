@@ -3,20 +3,18 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'home.dart';
 
-void main() async{
+void main() async {
   runApp(const MyApp());
 }
 
-
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-  
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
   // 테마 모드 light or dark
   ThemeMode _themeMode = ThemeMode.system; // system은 dark, light 둘다 사용
 
@@ -26,7 +24,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   static const seedColor = Colors.deepPurple;
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,19 +41,16 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       themeMode: _themeMode,
       darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        useMaterial3: true,
-        colorSchemeSeed: seedColor
-      ),
-
+          brightness: Brightness.dark,
+          useMaterial3: true,
+          colorSchemeSeed: seedColor),
 
       theme: ThemeData(
-        brightness: Brightness.light,
-        useMaterial3: true,
-        colorSchemeSeed: seedColor
-      ),
+          brightness: Brightness.light,
+          useMaterial3: true,
+          colorSchemeSeed: seedColor),
       // function도 보낼 수 있다.
-      
+
       home: const Home(),
     );
   }

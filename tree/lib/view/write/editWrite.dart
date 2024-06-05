@@ -85,7 +85,17 @@ class _EditWriteState extends State<EditWrite> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('수정페이지'),
+        toolbarHeight: 80,
+        title: Column(
+          children: [
+            Image.asset(
+              "images/tree.png",
+              width: 40,
+              height: 40,
+              fit: BoxFit.fill,
+            )
+          ],
+        ),
         leading: IconButton(
             onPressed: () {
               backAlert();
@@ -102,186 +112,189 @@ class _EditWriteState extends State<EditWrite> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 300,
-                      height: 40,
-                      child: Container(
-                        height: 30,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+          child: Center(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 300,
+                        height: 40,
+                        child: Container(
+                          height: 30,
+                          child: TextField(
+                            textAlignVertical: TextAlignVertical.center,
+                            controller: travelPlaceController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 10.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: 140,
+                            height: 40,
+                            child: TextField(
+                              readOnly: true,
+                              textAlign: TextAlign.center,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 10.0)),
+                              controller: day1Controller,
+                            ),
+                          ),
+                          const Text(" ~ "),
+                          Container(
+                            width: 140,
+                            height: 40,
+                            child: TextField(
+                              readOnly: true,
+                              textAlign: TextAlign.center,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 10.0)),
+                              controller: day2Controller,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  "날짜는 수정하실 수 없습니다.",
+                  style: TextStyle(
+                      fontSize: 10, color: Color.fromARGB(255, 250, 70, 70)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 300,
+                        height: 40,
                         child: TextField(
-                          textAlignVertical: TextAlignVertical.center,
-                          controller: travelPlaceController,
+                          controller: travelMateController,
                           decoration: InputDecoration(
-                            hintText: "어디로 여행을 다녀오셨나요?",
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 10.0),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 140,
-                          height: 40,
-                          child: TextField(
-                            readOnly: true,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                                hintText: "여행 첫째날",
-                                border: OutlineInputBorder(),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 10.0)),
-                            controller: day1Controller,
-                          ),
-                        ),
-                        const Text(" ~ "),
-                        Container(
-                          width: 140,
-                          height: 40,
-                          child: TextField(
-                            readOnly: true,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                                hintText: "여행 마지막날",
-                                border: OutlineInputBorder(),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 10.0)),
-                            controller: day2Controller,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 300,
-                      height: 40,
-                      child: TextField(
-                        controller: travelMateController,
-                        decoration: InputDecoration(
-                          hintText: "함께 여행간 사람은 누구인가요?",
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 10.0),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 300,
-                      height: 40,
-                      child: TextField(
-                        controller: weatherController,
-                        decoration: InputDecoration(
-                          hintText: "날씨는 어땠나요?",
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 10.0),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              dayWidget(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      if (dayCnt > 0) {
-                        saveCurrentDayText();
-                        dayCnt--;
-                        writeController.text = writeList[dayCnt];
-                      } else {
-                        Get.defaultDialog(
-                          barrierDismissible: false,
-                          title: "경고",
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text("첫째날의 여행 기록을 작성해 주세요"),
-                              TextButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: Text("OK"),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                      print(writeList); // 버튼을 눌렀을 때 writeList 출력
-                      setState(() {});
-                    },
-                    icon: Icon(Icons.arrow_back_ios),
+                    ],
                   ),
-                  IconButton(
-                    onPressed: () {
-                      saveCurrentDayText();
-                      if (dayCnt < travelDay) {
-                        dayCnt++;
-                        if (writeList.length <= dayCnt) {
-                          writeList.add("");
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 300,
+                        height: 40,
+                        child: TextField(
+                          controller: weatherController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 10.0),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                dayWidget(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        if (dayCnt > 0) {
+                          saveCurrentDayText();
+                          dayCnt--;
+                          writeController.text = writeList[dayCnt];
+                        } else {
+                          Get.defaultDialog(
+                            barrierDismissible: false,
+                            title: "경고",
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("첫번째 페이지 입니다."),
+                                TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  child: Text("OK"),
+                                ),
+                              ],
+                            ),
+                          );
                         }
-                        writeController.text = writeList[dayCnt];
-                      } else {
-                        Get.defaultDialog(
-                          barrierDismissible: false,
-                          title: "경고",
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("여행 기록을 추가하고 싶으시면\n여행 일자를 다시 선택해 주세요."),
-                              TextButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: Text("OK"),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                      print(writeList); // 버튼을 눌렀을 때 writeList 출력
-                      setState(() {});
-                    },
-                    icon: Icon(Icons.arrow_forward_ios),
-                  ),
-                ],
-              ),
-            ],
+                        print(writeList); // 버튼을 눌렀을 때 writeList 출력
+                        setState(() {});
+                      },
+                      icon: Icon(Icons.arrow_back_ios),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        saveCurrentDayText();
+                        if (dayCnt < travelDay) {
+                          dayCnt++;
+                          if (writeList.length <= dayCnt) {
+                            writeList.add("");
+                          }
+                          writeController.text = writeList[dayCnt];
+                        } else {
+                          Get.defaultDialog(
+                            barrierDismissible: false,
+                            title: "경고",
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("마지막 페이지 입니다."),
+                                TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  child: Text("OK"),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        print(writeList); // 버튼을 눌렀을 때 writeList 출력
+                        setState(() {});
+                      },
+                      icon: Icon(Icons.arrow_forward_ios),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -319,14 +332,14 @@ class _EditWriteState extends State<EditWrite> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
+              TextButton(
                   onPressed: () {
                     Get.back();
                     Get.back();
                     Get.back();
                   },
                   child: Text('나가기')),
-              ElevatedButton(
+              TextButton(
                   onPressed: () {
                     Get.back();
                   },

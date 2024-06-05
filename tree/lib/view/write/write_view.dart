@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:path/path.dart';
 import 'package:td_app/view/write/editWrite.dart';
 import 'package:td_app/vm/wrire/write_vm.dart';
 
@@ -32,7 +33,17 @@ class WriteView extends StatelessWidget {
 
       return Scaffold(
           appBar: AppBar(
-            title: Text('detail view'),
+            toolbarHeight: 80,
+            title: Column(
+              children: [
+                Image.asset(
+                  "images/tree.png",
+                  width: 40,
+                  height: 40,
+                  fit: BoxFit.fill,
+                )
+              ],
+            ),
             leading: IconButton(
                 onPressed: () {
                   controller.dayCnt = 0;
@@ -107,23 +118,46 @@ class WriteView extends StatelessWidget {
                   icon: Icon(Icons.menu))
             ],
           ),
-          body: SingleChildScrollView(
+          body: Center(
             child: Column(
               children: [
-                Text('여행지 : ${travelPlace}'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('여행 날짜 : '),
-                    Text(day1),
-                    Text('  ~  '),
-                    Text(day2),
-                  ],
-                ),
-                Text('여행 메이트 : ${travelMate}'),
-                Text('날씨 : ${weather}'),
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '여행지 : ${travelPlace}',
+                      ),
+                      SizedBox(
+                        width: 100,
+                      ),
+                      Text('날씨 : ${weather}'),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('여행 날짜 : '),
+                      Text(day1),
+                      Text('  ~  '),
+                      Text(day2),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text('여행 메이트 : ${travelMate}'),
+                ),
+                SizedBox(
+                  child: Divider(),
+                  width: 300,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(30),
                   child: Container(
                     width: 300,
                     foregroundDecoration: BoxDecoration(
@@ -132,7 +166,16 @@ class WriteView extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        Text("Day ${controller.dayCnt + 1}"),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Day ${controller.dayCnt + 1}",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -141,6 +184,9 @@ class WriteView extends StatelessWidget {
                               child: TextField(
                                 controller: writeController,
                                 maxLines: 10,
+                                readOnly: true,
+                                decoration:
+                                    InputDecoration(border: InputBorder.none),
                               ),
                             ),
                           ],

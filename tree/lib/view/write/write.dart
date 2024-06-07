@@ -320,6 +320,12 @@ class _WriteState extends State<Write> {
                 height: 30,
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    )),
                 onPressed: () {
                   saveCurrentDayText();
                   var stringWriteList = "";

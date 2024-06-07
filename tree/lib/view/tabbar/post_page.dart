@@ -61,39 +61,51 @@ class _PostPageState extends State<PostPage> {
                     box.write("postId", controller.posts[index].id);
                     Get.to(WriteView())!.then((value) => initData());
                   },
-                  child: Card(
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                controller.posts[index].day1,
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                              const Text(
-                                "~",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              Text(
-                                controller.posts[index].day2,
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                          child: Text(
-                            controller.posts[index].location,
-                            style: const TextStyle(
-                              fontSize: 22,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // 배경색 설정
+                      border: Border.all(
+                        color: Colors.green, // 테두리 색상 설정
+                        width: 2.0, // 테두리 두께 설정
+                      ),
+                      borderRadius: BorderRadius.circular(8.0), // 모서리 둥글게 설정
+                    ),
+                    child: Card(
+                      color: Colors.transparent, // Card의 배경색을 투명하게 설정
+                      elevation: 0, // 그림자 없애기
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  controller.posts[index].day1,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                                const Text(
+                                  "~",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                Text(
+                                  controller.posts[index].day2,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                            child: Text(
+                              controller.posts[index].location,
+                              style: const TextStyle(
+                                fontSize: 22,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

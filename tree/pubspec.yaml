@@ -83,6 +83,12 @@ flutter:
   assets:
     - images/
   #   - images/a_dot_ham.jpeg
+  fonts:
+    - family: Pretendard
+      fonts: 
+        - asset : fonts/Gaegu-Bold.ttf
+        - asset : fonts/Gaegu-Light.ttf
+        - asset : fonts/Gaegu-Regular.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

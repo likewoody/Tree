@@ -41,14 +41,15 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       themeMode: _themeMode,
       darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          useMaterial3: true,
-          colorSchemeSeed: seedColor),
-
+        brightness: Brightness.dark,
+        useMaterial3: true,
+        colorSchemeSeed: seedColor,
+      ),
       theme: ThemeData(
           brightness: Brightness.light,
           useMaterial3: true,
-          colorSchemeSeed: seedColor),
+          colorSchemeSeed: seedColor,
+          fontFamily: "Pretendard"),
       // function도 보낼 수 있다.
 
       home: const Home(),

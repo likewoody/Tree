@@ -128,11 +128,15 @@ class WriteView extends StatelessWidget {
                     children: [
                       Text(
                         '여행지 : ${travelPlace}',
+                        style: TextStyle(fontSize: 18),
                       ),
                       SizedBox(
-                        width: 100,
+                        width: 60,
                       ),
-                      Text('날씨 : ${weather}'),
+                      Text(
+                        '날씨 : ${weather}',
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ],
                   ),
                 ),
@@ -141,16 +145,31 @@ class WriteView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('여행 날짜 : '),
-                      Text(day1),
-                      Text('  ~  '),
-                      Text(day2),
+                      Text(
+                        '여행 날짜 : ',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Text(
+                        day1,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Text(
+                        '  ~  ',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Text(
+                        day2,
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ],
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20),
-                  child: Text('여행 메이트 : ${travelMate}'),
+                  child: Text(
+                    '여행 메이트 : ${travelMate}',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
                 SizedBox(
                   child: Divider(),

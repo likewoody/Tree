@@ -111,6 +111,9 @@ class VMGetHandler extends GetxController{
   searchPostDB() async{
     print("get test");
     posts = await handler.queryPost();
+    posts.forEach((element) {
+      print(element.id);
+    });
   }
 
   // ---- Delete Post ----

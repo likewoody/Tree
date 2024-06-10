@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:td_app/view/common/appbar.dart';
 import 'package:td_app/view/login/login.dart';
+import 'package:td_app/view/setting/personalPrivacy.dart';
 import 'package:td_app/view/setting/setting_password.dart';
 import 'package:td_app/vm/front_part/vm_get_handler.dart';
 
 
+// ignore: must_be_immutable
 class Setting extends StatelessWidget {
   Setting({super.key});
 
@@ -244,30 +246,6 @@ class Setting extends StatelessWidget {
         //   ],
         // ),
 
-
-        // 서비스 이용약관
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20,5,0,5),
-              child: Text('서비스 이용약관'),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,5,15,0),
-              child: IconButton(
-                onPressed: () => Get.to(
-                  null
-                  // ServiceInfo()
-                ), 
-                icon:const  Icon(Icons.arrow_forward_ios)
-              ),
-            ),
-          ],
-        ),
-
-
-
         // 개인 정보 처리방침
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -280,8 +258,8 @@ class Setting extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0,5,15,0),
               child: IconButton(
                 onPressed: () => Get.to(
-                  null
-                  // PersonalInfo()
+                  // null
+                  const PersonalPrivacy()
                 ), 
                 icon:const  Icon(Icons.arrow_forward_ios)
               ),

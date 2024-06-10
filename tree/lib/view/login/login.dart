@@ -8,6 +8,7 @@ import 'package:td_app/view/common/tabbar.dart';
 import 'package:td_app/vm/database_handler.dart';
 import 'package:td_app/vm/front_part/vm_get_handler.dart';
 
+// ignore: must_be_immutable
 class Login extends StatelessWidget {
   Login({super.key});
 
@@ -235,7 +236,7 @@ class Login extends StatelessWidget {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("login page test!!!!"),
+          title: const Text("로그인"),
         ),
         body: bodyBuilder()
       ),

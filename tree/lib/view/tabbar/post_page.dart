@@ -3,7 +3,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:td_app/view/common/appbar.dart';
-import 'package:td_app/view/post/detail.dart';
 import 'package:td_app/view/write/write.dart';
 import 'package:td_app/view/write/write_view.dart';
 import 'package:td_app/vm/front_part/vm_get_handler.dart';
@@ -20,7 +19,6 @@ class _PostPageState extends State<PostPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller = VMGetHandler();
     initData();
@@ -59,6 +57,7 @@ class _PostPageState extends State<PostPage> {
                   onTap: () {
                     final box = GetStorage();
                     box.write("postId", controller.posts[index].id);
+
                     Get.to(WriteView())!.then((value) => initData());
                   },
                   child: Container(
@@ -126,8 +125,8 @@ class _PostPageState extends State<PostPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () =>
             Get.to(const Write())!.then((value) => controller.searchPostDB()),
-        child: const Icon(Icons.add),
         backgroundColor: Colors.green[50],
+        child: const Icon(Icons.add),
       ),
     );
   }

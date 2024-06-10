@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'home.dart';
+import 'package:td_app/view/login/login.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -18,6 +18,7 @@ class _MyAppState extends State<MyApp> {
   // 테마 모드 light or dark
   ThemeMode _themeMode = ThemeMode.system; // system은 dark, light 둘다 사용
 
+  // ignore: unused_element
   _changeThemeMode(ThemeMode themeMode) {
     _themeMode = themeMode;
     setState(() {});
@@ -52,7 +53,7 @@ class _MyAppState extends State<MyApp> {
           fontFamily: "Pretendard"),
       // function도 보낼 수 있다.
 
-      home: const Home(),
+      home: Login(),
     );
   }
 }

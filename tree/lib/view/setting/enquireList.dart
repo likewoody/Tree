@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:td_app/view/common/appbar.dart';
 
+// ignore: must_be_immutable
 class EnquireList extends StatelessWidget {
   EnquireList({super.key});
 

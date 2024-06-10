@@ -26,6 +26,8 @@ class WriteView extends StatelessWidget {
   Widget build(BuildContext context) {
     final postId = box.read('postId');
 
+    print(postId);
+
     return GetBuilder<WriteVm>(builder: (controller) {
       controller.detailView();
       controller.postId = postId;

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -66,7 +66,7 @@ class _EditWriteState extends State<EditWrite> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   width: 250,
                   child: TextField(
                     controller: writeController,
@@ -100,14 +100,14 @@ class _EditWriteState extends State<EditWrite> {
             onPressed: () {
               backAlert();
             },
-            icon: Icon(Icons.arrow_back_ios)),
+            icon: const Icon(Icons.arrow_back_ios)),
         actions: [
           TextButton(
             onPressed: () {
               saveCurrentDayText();
               updatePost(); // 버튼을 눌렀을 때 writeList 출력
             },
-            child: Text('수정완료'),
+            child: const Text('수정완료'),
           )
         ],
       ),
@@ -122,15 +122,15 @@ class _EditWriteState extends State<EditWrite> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 300,
                         height: 40,
-                        child: Container(
+                        child: SizedBox(
                           height: 30,
                           child: TextField(
                             textAlignVertical: TextAlignVertical.center,
                             controller: travelPlaceController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 8.0, horizontal: 10.0),
@@ -148,13 +148,13 @@ class _EditWriteState extends State<EditWrite> {
                     children: [
                       Row(
                         children: [
-                          Container(
+                          SizedBox(
                             width: 140,
                             height: 40,
                             child: TextField(
                               readOnly: true,
                               textAlign: TextAlign.center,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 8.0, horizontal: 10.0)),
@@ -162,13 +162,13 @@ class _EditWriteState extends State<EditWrite> {
                             ),
                           ),
                           const Text(" ~ "),
-                          Container(
+                          SizedBox(
                             width: 140,
                             height: 40,
                             child: TextField(
                               readOnly: true,
                               textAlign: TextAlign.center,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 8.0, horizontal: 10.0)),
@@ -180,7 +180,7 @@ class _EditWriteState extends State<EditWrite> {
                     ],
                   ),
                 ),
-                Text(
+                const Text(
                   "날짜는 수정하실 수 없습니다.",
                   style: TextStyle(
                       fontSize: 10, color: Color.fromARGB(255, 250, 70, 70)),
@@ -190,12 +190,12 @@ class _EditWriteState extends State<EditWrite> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 300,
                         height: 40,
                         child: TextField(
                           controller: travelMateController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 10.0),
@@ -210,12 +210,12 @@ class _EditWriteState extends State<EditWrite> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 300,
                         height: 40,
                         child: TextField(
                           controller: weatherController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 10.0),
@@ -242,21 +242,20 @@ class _EditWriteState extends State<EditWrite> {
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text("첫번째 페이지 입니다."),
+                                const Text("첫번째 페이지 입니다."),
                                 TextButton(
                                   onPressed: () {
                                     Get.back();
                                   },
-                                  child: Text("OK"),
+                                  child: const Text("OK"),
                                 ),
                               ],
                             ),
                           );
                         }
-                        print(writeList); // 버튼을 눌렀을 때 writeList 출력
                         setState(() {});
                       },
-                      icon: Icon(Icons.arrow_back_ios),
+                      icon: const Icon(Icons.arrow_back_ios),
                     ),
                     IconButton(
                       onPressed: () {
@@ -275,21 +274,20 @@ class _EditWriteState extends State<EditWrite> {
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("마지막 페이지 입니다."),
+                                const Text("마지막 페이지 입니다."),
                                 TextButton(
                                   onPressed: () {
                                     Get.back();
                                   },
-                                  child: Text("OK"),
+                                  child: const Text("OK"),
                                 ),
                               ],
                             ),
                           );
                         }
-                        print(writeList); // 버튼을 눌렀을 때 writeList 출력
                         setState(() {});
                       },
-                      icon: Icon(Icons.arrow_forward_ios),
+                      icon: const Icon(Icons.arrow_forward_ios),
                     ),
                   ],
                 ),
@@ -326,7 +324,7 @@ class _EditWriteState extends State<EditWrite> {
   backAlert() {
     Get.defaultDialog(
         title: '작성중인 페이지를 나가시겠습니까?',
-        titleStyle: TextStyle(fontSize: 20),
+        titleStyle: const TextStyle(fontSize: 20),
         middleText: '작성중인 페이지를 나가시겠습니까?\n나가기를 누르면 저장되지 않습니다.',
         actions: [
           Row(
@@ -338,12 +336,12 @@ class _EditWriteState extends State<EditWrite> {
                     Get.back();
                     Get.back();
                   },
-                  child: Text('나가기')),
+                  child: const Text('나가기')),
               TextButton(
                   onPressed: () {
                     Get.back();
                   },
-                  child: Text('계속 쓰기')),
+                  child: const Text('계속 쓰기')),
             ],
           )
         ]);

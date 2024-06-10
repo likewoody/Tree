@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:path/path.dart';
 import 'package:td_app/view/write/editWrite.dart';
 import 'package:td_app/vm/wrire/write_vm.dart';
 
+// ignore: must_be_immutable
 class WriteView extends StatelessWidget {
   WriteView({super.key});
 
@@ -25,8 +25,6 @@ class WriteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final postId = box.read('postId');
-
-    print(postId);
 
     return GetBuilder<WriteVm>(builder: (controller) {
       controller.detailView();
@@ -51,7 +49,7 @@ class WriteView extends StatelessWidget {
                   controller.dayCnt = 0;
                   Get.back();
                 },
-                icon: Icon(Icons.arrow_back_ios)),
+                icon: const Icon(Icons.arrow_back_ios)),
             actions: [
               IconButton(
                   onPressed: () {
@@ -82,19 +80,19 @@ class WriteView extends StatelessWidget {
                                                         Get.back();
                                                         Get.back();
                                                       },
-                                                      child: Text('네')),
+                                                      child: const Text('네')),
                                                   ElevatedButton(
                                                       onPressed: () {
                                                         Get.back();
                                                         Get.back();
                                                       },
-                                                      child: Text('아니요')),
+                                                      child: const Text('아니요')),
                                                 ],
                                               ),
                                             )
                                           ]);
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       '삭제',
                                       style: TextStyle(fontSize: 20),
                                     ),
@@ -104,9 +102,9 @@ class WriteView extends StatelessWidget {
                                   padding: const EdgeInsets.all(8.0),
                                   child: TextButton(
                                     onPressed: () {
-                                      Get.to(EditWrite());
+                                      Get.to(const EditWrite());
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       '수정',
                                       style: TextStyle(fontSize: 20),
                                     ),
@@ -117,7 +115,7 @@ class WriteView extends StatelessWidget {
                           ),
                         ));
                   },
-                  icon: Icon(Icons.menu))
+                  icon: const Icon(Icons.menu))
             ],
           ),
           body: Center(
@@ -130,14 +128,14 @@ class WriteView extends StatelessWidget {
                     children: [
                       Text(
                         '여행지 : ${travelPlace}',
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 60,
                       ),
                       Text(
                         '날씨 : ${weather}',
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
@@ -147,21 +145,21 @@ class WriteView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         '여행 날짜 : ',
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
                         day1,
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
-                      Text(
+                      const Text(
                         '  ~  ',
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
                         day2,
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
@@ -170,12 +168,12 @@ class WriteView extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   child: Text(
                     '여행 메이트 : ${travelMate}',
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ),
-                SizedBox(
-                  child: Divider(),
+                const SizedBox(
                   width: 300,
+                  child: Divider(),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(30),
@@ -191,7 +189,7 @@ class WriteView extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             "Day ${controller.dayCnt + 1}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -200,14 +198,14 @@ class WriteView extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
+                            SizedBox(
                               width: 250,
                               child: TextField(
                                 controller: writeController,
                                 maxLines: 10,
                                 readOnly: true,
                                 decoration:
-                                    InputDecoration(border: InputBorder.none),
+                                    const InputDecoration(border: InputBorder.none),
                               ),
                             ),
                           ],
@@ -223,12 +221,12 @@ class WriteView extends StatelessWidget {
                         onPressed: () {
                           controller.removeCnt();
                         },
-                        icon: Icon(Icons.arrow_back_ios)),
+                        icon: const Icon(Icons.arrow_back_ios)),
                     IconButton(
                         onPressed: () {
                           controller.addCnt();
                         },
-                        icon: Icon(Icons.arrow_forward_ios))
+                        icon: const Icon(Icons.arrow_forward_ios))
                   ],
                 )
               ],

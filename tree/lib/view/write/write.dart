@@ -58,7 +58,7 @@ class _WriteState extends State<Write> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   width: 250,
                   child: TextField(
                     controller: writeController,
@@ -76,7 +76,7 @@ class _WriteState extends State<Write> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
+      appBar: const PreferredSize(
           preferredSize: Size.fromHeight(80), child: CommonAppbar()),
       body: SingleChildScrollView(
         child: Center(
@@ -87,15 +87,15 @@ class _WriteState extends State<Write> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 300,
                       height: 40,
-                      child: Container(
+                      child: SizedBox(
                         height: 30,
                         child: TextField(
                           textAlignVertical: TextAlignVertical.center,
                           controller: travelPlaceController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: "어디로 여행을 다녀오셨나요?",
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
@@ -114,13 +114,13 @@ class _WriteState extends State<Write> {
                   children: [
                     Row(
                       children: [
-                        Container(
+                        SizedBox(
                           width: 140,
                           height: 40,
                           child: TextField(
                             readOnly: true,
                             textAlign: TextAlign.center,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 hintText: "여행 첫째날",
                                 border: OutlineInputBorder(),
                                 contentPadding: EdgeInsets.symmetric(
@@ -148,7 +148,7 @@ class _WriteState extends State<Write> {
                                             changeDayText(day1Select);
                                         Get.back();
                                       },
-                                      child: Text("선택"),
+                                      child: const Text("선택"),
                                     ),
                                   ],
                                 ),
@@ -158,13 +158,13 @@ class _WriteState extends State<Write> {
                           ),
                         ),
                         const Text(" ~ "),
-                        Container(
+                        SizedBox(
                           width: 140,
                           height: 40,
                           child: TextField(
                             readOnly: true,
                             textAlign: TextAlign.center,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 hintText: "여행 마지막날",
                                 border: OutlineInputBorder(),
                                 contentPadding: EdgeInsets.symmetric(
@@ -194,7 +194,7 @@ class _WriteState extends State<Write> {
                                         alertDateSelect();
                                         dayisSelect = true;
                                       },
-                                      child: Text("선택"),
+                                      child: const Text("선택"),
                                     ),
                                   ],
                                 ),
@@ -213,12 +213,12 @@ class _WriteState extends State<Write> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 300,
                       height: 40,
                       child: TextField(
                         controller: travelMateController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "함께 여행간 사람은 누구인가요?",
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.symmetric(
@@ -234,12 +234,12 @@ class _WriteState extends State<Write> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 300,
                       height: 40,
                       child: TextField(
                         controller: weatherController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "날씨는 어땠나요?",
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.symmetric(
@@ -267,12 +267,12 @@ class _WriteState extends State<Write> {
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text("첫째날의 여행 기록을 작성해 주세요"),
+                              const Text("첫째날의 여행 기록을 작성해 주세요"),
                               TextButton(
                                 onPressed: () {
                                   Get.back();
                                 },
-                                child: Text("OK"),
+                                child: const Text("OK"),
                               ),
                             ],
                           ),
@@ -280,7 +280,7 @@ class _WriteState extends State<Write> {
                       }
                       setState(() {});
                     },
-                    icon: Icon(Icons.arrow_back_ios),
+                    icon: const Icon(Icons.arrow_back_ios),
                   ),
                   IconButton(
                     onPressed: () {
@@ -299,12 +299,12 @@ class _WriteState extends State<Write> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("여행 기록을 추가하고 싶으시면\n여행 일자를 다시 선택해 주세요."),
+                              const Text("여행 기록을 추가하고 싶으시면\n여행 일자를 다시 선택해 주세요."),
                               TextButton(
                                 onPressed: () {
                                   Get.back();
                                 },
-                                child: Text("OK"),
+                                child: const Text("OK"),
                               ),
                             ],
                           ),
@@ -312,11 +312,11 @@ class _WriteState extends State<Write> {
                       }
                       setState(() {});
                     },
-                    icon: Icon(Icons.arrow_forward_ios),
+                    icon: const Icon(Icons.arrow_forward_ios),
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               ElevatedButton(
@@ -340,7 +340,7 @@ class _WriteState extends State<Write> {
                       stringWriteList);
                   Get.offAll(const CommonTabbar());
                 },
-                child: Text("업로드 하기"),
+                child: const Text("업로드 하기"),
               ),
             ],
           ),
@@ -369,13 +369,13 @@ class _WriteState extends State<Write> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("날짜를 다시 선택해 주세요"),
-            SizedBox(height: 20), // 적절한 간격을 추가
+            const Text("날짜를 다시 선택해 주세요"),
+            const SizedBox(height: 20), // 적절한 간격을 추가
             TextButton(
               onPressed: () {
                 Get.back();
               },
-              child: Text("OK"),
+              child: const Text("OK"),
             ),
           ],
         ),

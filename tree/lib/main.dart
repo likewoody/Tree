@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:td_app/view/login/login.dart';
+import 'package:td_app/vm/wrire/write_vm.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -28,6 +29,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(WriteVm());
     return GetMaterialApp(
       // 언어 설정
       localizationsDelegates: const [

@@ -127,14 +127,14 @@ class WriteView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '여행지 : ${travelPlace}',
+                        '여행지 : $travelPlace',
                         style: const TextStyle(fontSize: 18),
                       ),
                       const SizedBox(
                         width: 60,
                       ),
                       Text(
-                        '날씨 : ${weather}',
+                        '날씨 : $weather',
                         style: const TextStyle(fontSize: 18),
                       ),
                     ],
@@ -167,7 +167,7 @@ class WriteView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Text(
-                    '여행 메이트 : ${travelMate}',
+                    '여행 메이트 : $travelMate',
                     style: const TextStyle(fontSize: 18),
                   ),
                 ),

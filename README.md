@@ -25,6 +25,7 @@ Travel diary를 기록하다
 <hr>
 Framework : Flutter<br>
 Database : SQLite<br>
+Design pattern : MVVM<br>
 State management : GetX<br><br><br>
 
 ### Packages
